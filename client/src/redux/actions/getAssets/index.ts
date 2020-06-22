@@ -25,13 +25,7 @@ export const getAssetsSucceeded = (data: []):GetAssetsSucceededAction => ({
 });
 
 export const getAssets = () => (dispatch: Dispatch<any>) => {
-  const headers = {
-    'Content-Type': 'application/json',
-    'APCA-API-KEY-ID': process.env.REACT_APP_ALPACA_CLIENT_ID,
-    'APCA-API-SECRET-KEY': process.env.REACT_APP_ALPACA_API_SECRET,
-  };
-
-  axios.get('https://paper-api.alpaca.markets/v2/assets', { headers })
+  axios.get('api/assets')
     .then((response) => {
       if (response.status === 200) {
         return dispatch(getAssetsSucceeded(response.data));

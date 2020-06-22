@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { createNotification } from '../createNotification/index.ts';
+import { createNotification, NoteType } from '../createNotification';
 // @ts-ignore
 import { headers } from '../../../config.ts';
 
@@ -28,17 +28,18 @@ export const cancelOrderSucceeded = (id: string):CancelOrderSucceededAction => (
 });
 
 export const cancelOrder = (id: string) => (dispatch: Dispatch<any>) => {
-  axios.delete(`https://paper-api.alpaca.markets/v2/orders/${id}`, { headers })
+  const params = { id };
+  axios.delete('api/orders', { params })
     .then((response) => {
       if (response.status === 200) {
         dispatch(cancelOrderSucceeded(id));
-        return dispatch(createNotification({ noteType: 'OK', message: 'Orders cancelled successfully' }));
+        return dispatch(createNotification({ noteType: NoteType.OK, message: 'Orders cancelled successfully' }));
       }
       return null;
     })
     .catch((e) => {
       dispatch(cancelOrderErrored(e));
       const message = (e.response && e.response.data && e.response.data.error) || e.message;
-      return dispatch(createNotification({ noteType: 'ERROR', message }));
+      return dispatch(createNotification({ noteType: NoteType.ERROR, message }));
     });
 };

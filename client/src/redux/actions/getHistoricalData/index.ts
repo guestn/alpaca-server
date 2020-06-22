@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { headers } from '../../../config.ts';
-import { createNotification } from '../createNotification/index.ts';
+import { createNotification, NoteType } from '../createNotification';
 
 export const GET_HISTORICAL_DATA_ERRORED = 'GET_HISTORICAL_DATA_ERRORED';
 export const GET_HISTORICAL_DATA_SUCCEEDED = 'GET_HISTORICAL_DATA_SUCCEEDED';
@@ -33,24 +32,22 @@ export const getHistoricalDataSucceeded = (data: {}):GetHistoricalDataSucceededA
 });
 
 export const getHistoricalData = ({ timeframe = '1D', limit = 5, symbols }: Params) => (dispatch: Dispatch<any>) => {
-  
   const before = '2020-04-15T09:30:00-04:00';
   const params = {
-    //timeframe,
+    timeframe,
     before: new Date(),
     limit,
     symbols,
   };
-
   // curl -H "APCA-API-KEY-ID: PK4XHGBPNJJ9XBNM6F3U"  -H "APCA-API-SECRET-KEY: GuqbPEudiBgjk4AohuXd9PPnA8GcpKkArXqHF7ci"  "https://data.alpaca.markets/v1/bars/1D?symbols=AAPL&limit=100"
 
-  axios.get(`https://cors-anywhere.herokuapp.com/https://data.alpaca.markets/v1/bars/${timeframe}`, { headers, params })
+  axios.get(`/api/historicaldata`, { params })
     .then((response) => {
       dispatch(getHistoricalDataSucceeded(response.data));
-      return dispatch(createNotification({ noteType: 'OK', message: 'Data loaded successfully' }));
+      return dispatch(createNotification({ noteType: NoteType.OK, message: 'Data loaded successfully' }));
     })
     .catch((e) => {
       dispatch(getHistoricalDataErrored(e));
-      return dispatch(createNotification({ noteType: 'ERROR', message: 'Could not load data' }));
+      return dispatch(createNotification({ noteType: NoteType.ERROR, message: 'Could not load data' }));
     });
 };

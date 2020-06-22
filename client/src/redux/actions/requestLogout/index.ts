@@ -1,5 +1,3 @@
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { createNotification, NoteType } from '../createNotification';
@@ -29,22 +27,12 @@ export const requestLogoutSucceeded = ():RequestLogoutSucceededAction => ({
 export const requestLogout = () => (dispatch: Dispatch<any>) => {
   axios.get('api/auth/logout')
   .then(() => {
-      historyPush('/login');
-      dispatch(requestLogoutSucceeded());
-      return dispatch(createNotification({ noteType: NoteType.OK, message: 'Logout Succesful' }));
-    })
-    .catch((e: Error) => {
-      dispatch(requestLogoutErrored(e));
-      return dispatch(createNotification({ noteType: NoteType.ERROR, message: e.message }));
-    });
-  // firebase.auth().signOut()
-  //   .then(() => {
-  //     historyPush('/login');
-  //     dispatch(requestLogoutSucceeded());
-  //     return dispatch(createNotification({ noteType: NoteType.OK, message: 'Logout Succesful' }));
-  //   })
-  //   .catch((e: Error) => {
-  //     dispatch(requestLogoutErrored(e));
-  //     return dispatch(createNotification({ noteType: NoteType.ERROR, message: e.message }));
-  //   });
+    historyPush('/login');
+    dispatch(requestLogoutSucceeded());
+    return dispatch(createNotification({ noteType: NoteType.OK, message: 'Logout Succesful' }));
+  })
+  .catch((e: Error) => {
+    dispatch(requestLogoutErrored(e));
+    return dispatch(createNotification({ noteType: NoteType.ERROR, message: e.message }));
+  });
 };

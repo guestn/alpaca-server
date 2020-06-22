@@ -26,13 +26,7 @@ export const getPositionsSucceeded = (data: []): GetPositionsSucceededAction => 
 });
 
 export const getPositions = () => (dispatch: Dispatch<any>) => {
-  const headers = {
-    'Content-Type': 'application/json',
-    'APCA-API-KEY-ID': process.env.REACT_APP_ALPACA_CLIENT_ID,
-    'APCA-API-SECRET-KEY': process.env.REACT_APP_ALPACA_API_SECRET,
-  };
-
-  axios.get('https://paper-api.alpaca.markets/v2/positions', { headers })
+  axios.get('api/positions')
     .then((response) => {
       if (response.status === 200) {
         dispatch(getPositionsSucceeded(response.data));

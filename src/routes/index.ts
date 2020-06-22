@@ -9,7 +9,7 @@ const router = Router();
 // Add sub-routes
 router.use('/users', UserRouter);
 router.use('/auth', AuthRouter);
-router.use('/account', AppRouter);
+router.use('/', AppRouter);
 
 // Export the base-router
 export default router;

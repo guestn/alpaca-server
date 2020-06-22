@@ -1,12 +1,9 @@
 import axios from 'axios';
-import { createNotification } from '../createNotification/index.ts';
+import { createNotification, NoteType } from '../createNotification';
 import { Dispatch } from 'redux';
-import 'firebase/auth';
-import * as firebase from 'firebase/app';
-//import { FirebaseAuth } from '@firebase/auth-types';
 
 //import * as firebase from 'firebase/app';
-import { historyPush } from '../../../router/index.ts';
+import { historyPush } from '../../../router';
 import { getPersistedUser } from '../../../utils';
 import { cachedDataVersionTag } from 'v8';
 
@@ -46,12 +43,11 @@ export const requestLogin = (params: Params) => (dispatch: Dispatch<any>) => {
   if (user) {
     historyPush('/');
     dispatch(requestLoginSucceeded(user));
-    return dispatch(createNotification({ noteType: 'OK', message: 'Login Succesful' }));
+    return dispatch(createNotification({ noteType: NoteType.OK, message: 'Login Succesful' }));
   }
 
 
   ///if (!params.user || !params.password || !params.password) return false;
-  //firebase.auth.Auth.Persistence.SESSION
   console.log({params})
   const data = {
     email: params.user,
@@ -61,38 +57,17 @@ export const requestLogin = (params: Params) => (dispatch: Dispatch<any>) => {
   axios.post('/api/auth/login', data)
     .then((response) => {
       if (response.status === 200) {
-        console.log('login response', {response})
-       // console.log({ jwt });
-        
+        console.log('login response', {response})        
         historyPush('/');
         dispatch(requestLoginSucceeded(response.data.user));
-        // return dispatch(createNotification({ noteType: 'OK', message: 'Order created successfully' }));
       }
       return null;
     })
     .catch((e) => {
       console.log({e})
 
-      // dispatch(createOrderErrored(e));
-      // return dispatch(createNotification({ noteType: 'ERROR', message: e.response.data.error }));
+      dispatch(requestLoginErrored(e));
+      return dispatch(createNotification({ noteType: NoteType.ERROR, message: e.response.data.error }));
     });
-
-  // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-  //   .then(() => {
-  //     firebase.auth().signInWithEmailAndPassword(params.user, params.password)
-  //       .then((response) => {
-  //         historyPush('/');
-  //         dispatch(requestLoginSucceeded(response.user));
-  //         return dispatch(createNotification({ noteType: 'OK', message: 'Login Succesful' }));
-  //       })
-  //       .catch((e: Error) => {
-  //         dispatch(requestLoginErrored(e));
-  //         return dispatch(createNotification({ noteType: 'ERROR', message: e.message }));
-  //       });
-  //   })
-  //   .catch((e: Error) => {
-  //     console.error('persistence login error', e);
-  //   });
-
   return false;
 };

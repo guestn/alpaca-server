@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { createNotification } from '../createNotification/index.ts';
-import { headers } from '../../../config';
+import { createNotification, NoteType } from '../createNotification';
 
 export const GET_ORDERS_ERRORED = 'GET_ORDERS_ERRORED';
 export const GET_ORDERS_SUCCEEDED = 'GET_ORDERS_SUCCEEDED';
@@ -27,11 +26,12 @@ export const getOrdersSucceeded = (data:[]):GetOrdersSuccededAction => ({
 });
 
 export const getOrders = () => (dispatch: Dispatch<any>) => {
-  axios.get('https://paper-api.alpaca.markets/v2/orders?status=all', { headers })
+  const params = { status: 'all' };
+  axios.get('api/orders', { params })
     .then((response) => {
       if (response.status === 200) {
         dispatch(getOrdersSucceeded(response.data));
-        //return dispatch(createNotification({ noteType: 'OK', message: 'Orders fetched successfully' }));
+        //return dispatch(createNotification({ noteType: NoteType.OK, message: 'Orders fetched successfully' }));
       }
       return null;
     })
@@ -40,6 +40,6 @@ export const getOrders = () => (dispatch: Dispatch<any>) => {
       
       dispatch(getOrdersErrored(e));
       const message = (e.response && e.response.data && e.response.data.error) || e.message;
-      return dispatch(createNotification({ noteType: 'ERROR', message }));
+      return dispatch(createNotification({ noteType: NoteType.ERROR, message }));
     });
 };

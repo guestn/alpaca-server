@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { createNotification}  from '../createNotification/index.ts';
+import { createNotification, NoteType }  from '../createNotification/index';
 import { headers } from '../../../config'
 import { Dispatch } from 'redux';
 
@@ -27,12 +27,12 @@ export const getClockSucceeded = (data: object):GetClockSucceededAction => ({
 });
 
 export const getClock = () => (dispatch: Dispatch<any>) => {
-  axios.get('https://paper-api.alpaca.markets/v2/clock', { headers })
+  axios.get('api/clock')
     .then((response: AxiosResponse) => {
       dispatch(getClockSucceeded(response.data));
     })
     .catch((e: Error) => {
       dispatch(getClockErrored(e));
-      return dispatch(createNotification({ noteType: 'ERROR', message: 'Could not get clock' }));
+      return dispatch(createNotification({ noteType: NoteType.ERROR, message: 'Could not get clock' }));
     });
 };

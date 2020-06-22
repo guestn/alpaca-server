@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { createNotification } from '../createNotification/index.ts';
-import { headers } from '../../../config.ts';
+import { createNotification, NoteType } from '../createNotification';
 
 export const CREATE_ORDER_ERRORED = 'CREATE_ORDER_ERRORED';
 export const CREATE_ORDER_SUCCEEDED = 'CREATE_ORDER_SUCCEEDED';
@@ -42,16 +41,16 @@ export const createOrder = ({ symbol, qty, side, type, time_in_force }: Params) 
   const data = {
     symbol, qty, side, type, time_in_force,
   };
-  axios.post('https://paper-api.alpaca.markets/v2/orders', data, { headers })
+  axios.post('api/orders', data)
     .then((response) => {
       if (response.status === 200) {
         dispatch(createOrderSucceeded(response.data));
-        return dispatch(createNotification({ noteType: 'OK', message: 'Order created successfully' }));
+        return dispatch(createNotification({ noteType: NoteType.OK, message: 'Order created successfully' }));
       }
       return null;
     })
     .catch((e) => {
       dispatch(createOrderErrored(e));
-      return dispatch(createNotification({ noteType: 'ERROR', message: e.response.data.error }));
+      return dispatch(createNotification({ noteType: NoteType.ERROR, message: e.response.data.error }));
     });
 };
