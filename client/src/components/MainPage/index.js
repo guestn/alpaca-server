@@ -6,7 +6,7 @@ import LiveDataBox from './LiveDataBox';
 import TradeBox from './TradeBox';
 import Orders from '../../containers/Orders';
 import Account from '../../containers/Account/index.tsx';
-import LiveQuotes from '../../containers/LiveQuotes';
+import LiveQuotes from '../../containers/LiveQuotes/index.tsx';
 import Status from '../../containers/Status';
 import Header from '../Header';
 import styles from './styles';
@@ -35,9 +35,7 @@ const MainPage = ({
   }, [ticker]);
 
   const onRequestTicker = (theTicker) => {
-    setTicker(theTicker);
-    console.log({ hello: theTicker });
-    
+    setTicker(theTicker);    
     onRequestHistoricalData({ ...scales[duration], symbols: theTicker });
   };
 
@@ -57,7 +55,7 @@ const MainPage = ({
       />
       <div css={styles.mainGrid}>
         <LiveDataBox liveData={liveData && liveData[ticker]} ticker={ticker} />
-        <Orders type="compact" />
+        <Orders type="compact" notCanceled />
         <TradeBox
           onCreateOrder={onCreateOrder}
           ticker={ticker}

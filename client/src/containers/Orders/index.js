@@ -6,11 +6,13 @@ import actions from '../../redux/actions/index.ts';
 
 const Orders = ({
   cancelOrder,
+  notCanceled,
   orders,
   getOrders,
   type,
 }) => (
   <OrdersBox
+    notCanceled={notCanceled}
     onCancelOrder={cancelOrder}
     orders={orders}
     onRequestOrders={getOrders}
@@ -18,8 +20,9 @@ const Orders = ({
   />
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
   orders: state.orders || null,
+  notCanceled: ownProps.notCanceled
 });
 
 const mapDispatchToProps = (dispatch) => ({

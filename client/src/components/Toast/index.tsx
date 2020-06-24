@@ -1,26 +1,35 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import React, { useEffect, useRef, useState } from 'react';
-import { oneOf, string } from 'prop-types';
+import React, { useEffect, useRef, useState, MutableRefObject } from 'react';
+import { NoteType } from '../../redux/actions/createNotification'
 import styles from './styles';
+
+
+interface ToastProps {
+  message: string,
+  noteType: NoteType,
+};
 
 const Toast = ({
   message = 'There was an error',
   noteType,
-}) => {
-  const timerRef = useRef(null);
+}: ToastProps)  => {
+  const timerRef = useRef<number | null>(null);
   const [isActive, setIsActive] = useState(false);
   const setTimer = () => {
-    timerRef.current = setTimeout(() => {
-      setIsActive(false);
-    }, 3000);
+    if (timerRef) {
+      timerRef.current = window.setTimeout(() => {
+        setIsActive(false);
+      }, 3000);
+    }
+
   };
 
   useEffect(() => {
     setIsActive(true);
     setTimer();
     return () => {
-      clearTimeout(timerRef.current);
+        window.clearTimeout(timerRef.current);
     };
   }, [message]);
 
@@ -35,11 +44,6 @@ const Toast = ({
     );
   }
   return null;
-};
-
-Toast.propTypes = {
-  message: string,
-  noteType: oneOf(['OK', 'ERROR']),
 };
 
 export default Toast;

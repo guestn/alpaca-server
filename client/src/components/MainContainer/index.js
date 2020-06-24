@@ -2,16 +2,16 @@
 import { jsx, Global } from '@emotion/core';
 import React, { useEffect, useState } from 'react';
 import { array, object } from 'prop-types';
-import Toast from '../Toast';
+import Toast from '../Toast/index.tsx';
 import styles from './styles';
 import Icon from '../Icon';
 import LoginPage from '../LoginPage';
 import MainPage from '../MainPage';
 import OrdersPage from '../OrdersPage';
 
-import Route from '../../router/Route/index.tsx';
-import Link from '../../router/Link/index.tsx';
-import { historyPush } from '../../router/index.ts';
+import Route from '../../router/Route';
+import Link from '../../router/Link';
+import { historyPush } from '../../router';
 
 
 const MainContainer = (props) => {

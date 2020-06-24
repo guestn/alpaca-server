@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import React, { useEffect, Fragment } from 'react';
-import { array, func, string } from 'prop-types';
+import { array, func, string, bool } from 'prop-types';
 import { format } from 'date-fns';
 import { useInterval } from '../../utils';
 import Icon from '../Icon';
@@ -18,6 +18,7 @@ const OrdersBox = ({
   onCancelOrder,
   onRequestOrders,
   type,
+  notCanceled,
 }) => {
   let title = 'Waiting';
   useEffect(() => {
@@ -60,6 +61,7 @@ const OrdersBox = ({
             <tbody>
               { orders
                 .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                .filter((o) => (notCanceled ? o.status !== 'canceled' : o))
                 .map((o) => (
                   <tr key={o.created_at} css={styles.disabled(o.status === 'canceled')}>
                     <td>{ o.symbol }</td>
@@ -95,6 +97,7 @@ const OrdersBox = ({
 };
 
 OrdersBox.propTypes = {
+  notCanceled: bool,
   orders: array,
   onCancelOrder: func,
   onRequestOrders: func,

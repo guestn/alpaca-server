@@ -7,52 +7,12 @@ import { JwtService } from '@shared/JwtService';
 import { paramMissingError, loginFailedErr, cookieProps } from '@shared/constants';
 import { cachedDataVersionTag } from 'v8';
 import axios, { AxiosResponse } from 'axios';
-const {parse, stringify} = require('flatted');
 
 import { apiRoot, headers } from '../../config';
 
 const router = Router();
 const userDao = new UserDao();
 const jwtService = new JwtService();
-
-
-/******************************************************************************
- *                      Login User - "POST /api/auth/login"
- ******************************************************************************/
-
-// router.post('/login', async (req: Request, res: Response) => {
-//     // Check email and password present
-//     const { email, password } = req.body;
-//     if (!(email && password)) {
-//         return res.status(BAD_REQUEST).json({
-//             error: paramMissingError,
-//         });
-//     }
-//     // Fetch user
-//     const user = await userDao.getOne(email);
-//     console.log({user})
-//     if (!user) {
-//         return res.status(UNAUTHORIZED).json({
-//             error: loginFailedErr,
-//         });
-//     }
-//     // Check password
-//     const pwdPassed = await bcrypt.compare(password, user.pwdHash);
-//     if (!pwdPassed) {
-//         return res.status(UNAUTHORIZED).json({
-//             error: loginFailedErr,
-//         });
-//     }
-//     // Setup Admin Cookie
-//     const jwt = await jwtService.getJwt({
-//         id: user.id,
-//         role: user.role,
-//     });
-//     const { key, options } = cookieProps;
-//     res.cookie(key, jwt, options);
-//     // Return
-//     return res.status(OK).end();
-// });
 
 
 /******************************************************************************
@@ -98,7 +58,7 @@ router.get('/historicalData', async (req: Request, res: Response) => {
 });
 
 /******************************************************************************
- *                      Orders - "GET /api/orders"
+ *                      Orders - "GET/POST/DELETE /api/orders"
  ******************************************************************************/
 
 router.get('/orders', async (req: Request, res: Response) => {

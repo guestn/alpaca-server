@@ -1,23 +1,23 @@
 import React from 'react';
-// import { func, object } from 'prop-types';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux'
-// import * as React from 'react'
-import AccountBox from '../../components/MainPage/AccountBox/index.tsx';
-import actions from '../../redux/actions/index.ts';
+
+import AccountBox from '../../components/MainPage/AccountBox';
+import actions from '../../redux/actions';
 import { RootState } from '../../redux/reducers/types';
 
-// interface StateProps {
-//   propFromReduxStore: string
-// }
-     
 interface DispatchProps {
-  getAccountData: () => void
+  getAccountData: () => {}
 }
 
+export interface AccountData {
+  buying_power: string,
+  cash: string,
+  portfolio_value: string,
+}
 interface AccountProps  {
-  accountData: object,
-  getAccountData: () => void,
+  accountData: AccountData,
+  getAccountData: () => {},
 }
 
 const Account = ({
@@ -37,10 +37,5 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchProps => ({
   getAccountData: () => dispatch(actions.getAccountData()),
 });
-
-// Account.propTypes = {
-//   accountData: object,
-//   getAccountData: func,
-// };
 
 export default connect<RootState, DispatchProps>(mapStateToProps, mapDispatchToProps)(Account);

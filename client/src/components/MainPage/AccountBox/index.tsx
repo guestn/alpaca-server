@@ -1,8 +1,9 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import React, { useEffect, Fragment } from 'react';
+import { AccountData } from '../../../containers/Account'
 
-import styles from './styles.ts';
+import styles from './styles';
 
 const commaNum = (n: string) => parseInt(n, 10).toLocaleString('en-US', { minimumFractionDigits: 2 });
 
@@ -18,7 +19,6 @@ const AccountBox = ({
   if (accountData) {
     title = 'Account';
   }
-  console.log({ accountData });
   
   return (
     <section css={styles.container}>
@@ -43,11 +43,7 @@ const AccountBox = ({
 };
 
 interface AccountBoxProps {
-  accountData: {
-    buying_power: string,
-    cash: string,
-    portfolio_value: string,
-  },
+  accountData: AccountData,
   onRequestAccountData: () => {},
 }
 
