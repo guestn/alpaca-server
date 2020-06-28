@@ -1,4 +1,4 @@
-import { IRoute } from './Route/index.tsx';
+import { IRoute } from './Route';
 
 export const instances:IRoute[] = []; // active routes array
 

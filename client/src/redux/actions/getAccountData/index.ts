@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { Dispatch } from 'redux';
 import { createNotification, NoteType } from '../createNotification';
-import { headers } from '../../../config';
 
 export const GET_ACCOUNT_DATA_ERRORED = 'GET_ACCOUNT_DATA_ERRORED';
 export const GET_ACCOUNT_DATA_SUCCEEDED = 'GET_ACCOUNT_DATA_SUCCEEDED';
@@ -26,7 +25,7 @@ export const getAccountDataSucceeded = (data: {}): GetAccountDataSucceededAction
 });
 
 export const getAccountData = () => (dispatch: Dispatch<any>) => {
-  axios.get('api/account', { headers })
+  axios.get('api/account')
   //axios.get('https://paper-api.alpaca.markets/v2/account', { headers })
     .then((response: AxiosResponse) => {
       dispatch(getAccountDataSucceeded(response.data));

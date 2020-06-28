@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
-import React, { useEffect, useRef, useState, MutableRefObject } from 'react';
+import { css, jsx } from '@emotion/core';
+import React, { useEffect, useRef, useState } from 'react';
 import { NoteType } from '../../redux/actions/createNotification'
 import styles from './styles';
 
@@ -17,19 +17,16 @@ const Toast = ({
   const timerRef = useRef<number | null>(null);
   const [isActive, setIsActive] = useState(false);
   const setTimer = () => {
-    if (timerRef) {
-      timerRef.current = window.setTimeout(() => {
-        setIsActive(false);
-      }, 3000);
-    }
-
+    timerRef.current = window.setTimeout(() => {
+      setIsActive(false);
+    }, 3000);
   };
 
   useEffect(() => {
     setIsActive(true);
     setTimer();
     return () => {
-        window.clearTimeout(timerRef.current);
+      window.clearTimeout(timerRef.current!);
     };
   }, [message]);
 

@@ -2,10 +2,7 @@ import axios from 'axios';
 import { createNotification, NoteType } from '../createNotification';
 import { Dispatch } from 'redux';
 
-//import * as firebase from 'firebase/app';
 import { historyPush } from '../../../router';
-import { getPersistedUser } from '../../../utils';
-import { cachedDataVersionTag } from 'v8';
 
 export const REQUEST_LOGIN_ERRORED = 'REQUEST_LOGIN_ERRORED';
 export const REQUEST_LOGIN_SUCCEEDED = 'REQUEST_LOGIN_SUCCEEDED';
@@ -37,14 +34,14 @@ export const requestLoginSucceeded = (user: {}):RequestLoginSucceededAction => (
 });
 
 export const requestLogin = (params: Params) => (dispatch: Dispatch<any>) => {
-  const user = getPersistedUser();
+  // const user = getPersistedUser();
 
-  console.log({user})
-  if (user) {
-    historyPush('/');
-    dispatch(requestLoginSucceeded(user));
-    return dispatch(createNotification({ noteType: NoteType.OK, message: 'Login Succesful' }));
-  }
+  // console.log({user})
+  // if (user) {
+  //   historyPush('/');
+  //   dispatch(requestLoginSucceeded(user));
+  //   return dispatch(createNotification({ noteType: NoteType.OK, message: 'Login Succesful' }));
+  // }
 
 
   ///if (!params.user || !params.password || !params.password) return false;
@@ -53,10 +50,17 @@ export const requestLogin = (params: Params) => (dispatch: Dispatch<any>) => {
     email: params.user,
     password: params.password
   }
+
+
+  if (!document.cookie.split(';').some((item) => item.trim().startsWith('name=Alpaca-Client'))) {
+    console.log('The cookie does not exists (ES6)')
+    if (!params.user || !params.password) return
+  }
   console.log('login action')
   axios.post('/api/auth/login', data)
     .then((response) => {
       if (response.status === 200) {
+        document.cookie = "name=Alpaca-Client";
         console.log('login response', {response})        
         historyPush('/');
         dispatch(requestLoginSucceeded(response.data.user));

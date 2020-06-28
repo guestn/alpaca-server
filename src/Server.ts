@@ -49,6 +49,12 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 
+app.use((req, res, next) => {
+  console.log('aha');
+  next();
+});
+
+
 
 
 /************************************************************************************

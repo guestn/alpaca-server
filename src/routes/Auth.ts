@@ -72,6 +72,7 @@ router.post('/login', async (req: Request, res: Response) => {
  ******************************************************************************/
 
 router.get('/logout', async (req: Request, res: Response) => {
+  console.log('logout')
   const { key, options } = cookieProps;
   res.clearCookie(key, options);
   return res.status(OK).end();

@@ -27,6 +27,7 @@ export const requestLogoutSucceeded = ():RequestLogoutSucceededAction => ({
 export const requestLogout = () => (dispatch: Dispatch<any>) => {
   axios.get('api/auth/logout')
   .then(() => {
+    document.cookie = "name=; expires=Thu, 01 Jan 1970 00:00:00 GMT"; //expire the client cookie
     historyPush('/login');
     dispatch(requestLogoutSucceeded());
     return dispatch(createNotification({ noteType: NoteType.OK, message: 'Logout Succesful' }));
