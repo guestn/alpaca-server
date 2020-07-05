@@ -10,7 +10,7 @@ export const cookieProps = Object.freeze({
   key: 'Alpaca-Server',
   secret: process.env.COOKIE_SECRET,
   options: {
-    httpOnly: true,
+    httpOnly: false,
     signed: true,
     path: (process.env.COOKIE_PATH),
     maxAge: Number(process.env.COOKIE_EXP),
