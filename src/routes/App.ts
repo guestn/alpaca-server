@@ -6,7 +6,7 @@ import { JwtService } from '@shared/JwtService';
 import { paramMissingError, loginFailedErr, cookieProps } from '@shared/constants';
 import axios, { AxiosResponse } from 'axios';
 
-import { apiRoot, headers } from '../../config';
+import { apiRoot, headers } from '../config';
 
 const router = Router();
 

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "sourceMap": false
   },
+  "moduleResolution": "node",
   "exclude": [
     "spec",
     "src/**/*.mock.ts",

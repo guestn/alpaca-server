@@ -6,10 +6,14 @@ try {
   // Remove current build
   fs.removeSync('./dist/');
   // Copy front-end files
+  fs.copySync('./client/build', './dist/client/public');
+
   fs.copySync('./src/public', './dist/public');
+  //fs.copySync('./src', './dist');
   fs.copySync('./src/views', './dist/views');
   // Transpile the typescript files
   childProcess.exec('tsc --build tsconfig.prod.json');
+  console.log('Built successfully')
 } catch (err) {
   console.log(err);
 }

@@ -63,9 +63,9 @@ app.use((req, res, next) => {
 
 const viewsDir = path.join(__dirname, 'views');
 app.set('views', viewsDir);
-const clientDir = path.join(__dirname, '../client/public');
+const clientDir = path.join(__dirname, './client/public');
 app.set('views', viewsDir);
-const staticDir = path.join(__dirname, '../client/public');
+const staticDir = path.join(__dirname, './client/public');
 app.use(express.static(staticDir));
 
 
@@ -75,25 +75,25 @@ app.get('/login', (req: Request, res: Response) => {
   if (jwt) {
     console.log('is LOGGED IN')
     return res.redirect('/');
-    return res.redirect('http://localhost:3000/index.html');
+    //return res.redirect('http://localhost:3000/index.html');
   }
   return res.redirect('/');
 });
 
-app.get('*', (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response) => {
   console.log('login if not logged in', req.originalUrl)
   const jwt = req.signedCookies[cookieProps.key];
   if (!jwt) {
     return res.sendFile('login.html', { root: viewsDir });
   } else {
-    return res.redirect('/');
+    console.log('resredirect')
+    return res.sendFile('index.html', { root: clientDir })
   }
 });
 
 
 app.get('/orders', (req: Request, res: Response) => {
   console.log('ORDERS');
-
 })
 
 app.get('/users', (req: Request, res: Response) => {

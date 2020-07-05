@@ -25,6 +25,9 @@
       ],
       "@server": [
         "src/Server"
+      ],
+      "@client/*": [
+        "src/client/*"
       ]
     },
     "types": [
@@ -36,9 +39,10 @@
   },
   "include": [
     "src/**/*.ts",
-    "spec/**/*.ts"
+    "src/**/*.js",
+    "spec/**/*.ts", "src/index.js"
   ],
   "exclude": [
-    "src/public/"
+    "src/public/",
   ]
 }
