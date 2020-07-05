@@ -65,7 +65,7 @@ const viewsDir = path.join(__dirname, 'views');
 app.set('views', viewsDir);
 const clientDir = path.join(__dirname, './client/public');
 app.set('views', viewsDir);
-const staticDir = path.join(__dirname, './client/public');
+const staticDir = process.env.NODE_ENV === 'development' ? path.join(__dirname, '../client/public') : path.join(__dirname, './client/public')
 app.use(express.static(staticDir));
 
 
