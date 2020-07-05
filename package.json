@@ -2,7 +2,7 @@
   "name": "alpaca-server",
   "version": "0.0.0",
   "scripts": {
-    "build": "node build.js",
+    "build": "cd client && yarn build && cd .. && node build.js",
     "lint": "tslint --project \"tsconfig.json\"",
     "start": "node -r module-alias/register './dist' --env=production",
     "startmm": "node ./dist/index.js",
