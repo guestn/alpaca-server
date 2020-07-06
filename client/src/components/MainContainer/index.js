@@ -8,6 +8,8 @@ import Icon from '../Icon';
 import LoginPage from '../LoginPage';
 import MainPage from '../MainPage';
 import OrdersPage from '../OrdersPage';
+import AlertsPage from '../AlertsPage';
+
 
 import Route from '../../router/Route';
 import Link from '../../router/Link';
@@ -40,9 +42,11 @@ const MainContainer = (props) => {
         <img src="/images/alpaca.svg" alt="Alpaca Logo" css={styles.logo} />
         <Link to="/" active={location.pathname === '/'}><Icon name="home-outline" /></Link>
         <Link to="/orders" active={location.pathname === '/orders'}><Icon name="book-outline" /></Link>
+        <Link to="/alerts" active={location.pathname === '/alerts'}><Icon name="megaphone-outline" /></Link>
       </aside>
       <Route component={<MainPage {...props} />} path="/" exact />
       <Route component={<OrdersPage {...props} />} path="/orders" exact />
+      <Route component={<AlertsPage {...props} />} path="/alerts" exact />
       { notification
         && <Toast {...notification} /> }
     </div>

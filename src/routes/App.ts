@@ -14,7 +14,7 @@ const checkAuth = () => {
   return (req: Request, res: Response, next: NextFunction) => {
     const jwt = req.signedCookies[cookieProps.key];
     if (!jwt) {
-      res.status(UNAUTHORIZED).send('Unauthorized Request')
+      res.status(UNAUTHORIZED).send('Unauthorized Request I am afraid')
     } else {
       next();
     }
