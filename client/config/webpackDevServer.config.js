@@ -80,10 +80,13 @@ module.exports = function(proxy, allowedHost) {
       // See https://github.com/facebook/create-react-app/issues/387.
       disableDotRule: true,
     },
+    // historyApiFallback: {
+    //   index:'/index.html'
+    // },
     public: allowedHost,
-    proxy: {
-      '*': 'http://localhost:9000',
-    },
+    // proxy: {
+    //   '*': 'http://localhost:9000',
+    // },
     headers: {
       'Access-Control-Allow-Origin': '*',
     },

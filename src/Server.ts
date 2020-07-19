@@ -2,6 +2,7 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import path from 'path';
 import helmet from 'helmet';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 import express, { Request, Response, NextFunction } from 'express';
 import { BAD_REQUEST } from 'http-status-codes';
@@ -54,6 +55,12 @@ app.use((req, res, next) => {
   next();
 });
 
+const proxyMiddleware = createProxyMiddleware({
+  target: 'http://localhost:3000',
+  changeOrigin: true,
+})
+
+app.use('/', proxyMiddleware)
 
 
 
@@ -63,22 +70,25 @@ app.use((req, res, next) => {
 
 const viewsDir = path.join(__dirname, 'views');
 app.set('views', viewsDir);
-const clientDir = path.join(__dirname, './client/public');
+//const clientDir = path.join(__dirname, './client/public');
+const clientDir = process.env.NODE_ENV === 'development' ? path.join(__dirname, '../client/public') : path.join(__dirname, './client/public')
+
 app.set('views', viewsDir);
 const staticDir = process.env.NODE_ENV === 'development' ? path.join(__dirname, '../client/public') : path.join(__dirname, './client/public')
 app.use(express.static(staticDir));
 
 
-app.get('/login', (req: Request, res: Response) => {
-  const jwt = req.signedCookies[cookieProps.key];
+// app.get('/login', (req: Request, res: Response) => {
+//   const jwt = req.signedCookies[cookieProps.key];
 
-  if (jwt) {
-    console.log('is LOGGED IN')
-    return res.redirect('/');
-    //return res.redirect('http://localhost:3000/index.html');
-  }
-  return res.redirect('/');
-});
+//   if (jwt) {
+//     console.log('is LOGGED IN')
+//     return res.redirect('/');
+//     //return res.redirect('http://localhost:3000/index.html');
+//   }
+//   return res.redirect('/');
+// });
+
 
 app.get('/', (req: Request, res: Response) => {
   console.log('login if not logged in', req.originalUrl)
@@ -91,19 +101,35 @@ app.get('/', (req: Request, res: Response) => {
   }
 });
 
-
-app.get('/orders', (req: Request, res: Response) => {
-  console.log('ORDERS');
+app.get('/*', (req: Request, res: Response) => {
+  console.log('GET ALERTS')
+  //return res.sendFile('index.html', { root: clientDir })
 })
 
-app.get('/users', (req: Request, res: Response) => {
-  const jwt = req.signedCookies[cookieProps.key];
-  if (!jwt) {
-    res.redirect('/');
-  } else {
-    res.sendFile('users.html', { root: viewsDir });
-  }
-});
+
+// app.get('/orders', (req: Request, res: Response) => {
+//   console.log('ORDERS');
+// })
+
+// app.get('/users', (req: Request, res: Response) => {
+//   const jwt = req.signedCookies[cookieProps.key];
+//   if (!jwt) {
+//     res.redirect('/');
+//   } else {
+//     res.sendFile('users.html', { root: viewsDir });
+//   }
+// });
+
+// app.get('/alerts', (req: Request, res: Response) => {
+//   const jwt = req.signedCookies[cookieProps.key];
+//   if (!jwt) {
+//     res.redirect('/');
+//   } else {
+//     res.redirect('http://localhost:3000/alerts');
+//   }
+// });
+
+
 
 
 // Export express instance

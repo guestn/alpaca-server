@@ -10,45 +10,48 @@ import MainPage from '../MainPage';
 import OrdersPage from '../OrdersPage';
 import AlertsPage from '../AlertsPage';
 
-
 import Route from '../../router/Route';
 import Link from '../../router/Link';
 import { historyPush } from '../../router';
 
-
 const MainContainer = (props) => {
-  
   const [notification, setNotification] = useState(null);
   useEffect(() => {
     setNotification(props.notifications[0]);
   }, [props.notifications.length]);
 
-  if (!Object.keys(props.user).length) { 
+  if (!Object.keys(props.user).length) {
     historyPush('/login');
     return (
       <div css={styles.login}>
         <Global styles={styles.global} />
         <Route component={<LoginPage {...props} />} path="/login" exact />
-        { notification
-        && <Toast {...notification} /> }
+        {notification && <Toast {...notification} />}
       </div>
     );
   }
+
+  //debugger;
 
   return (
     <div css={styles.app}>
       <Global styles={styles.global} />
       <aside css={styles.sidebar}>
         <img src="/images/alpaca.svg" alt="Alpaca Logo" css={styles.logo} />
-        <Link to="/" active={location.pathname === '/'}><Icon name="home-outline" /></Link>
-        <Link to="/orders" active={location.pathname === '/orders'}><Icon name="book-outline" /></Link>
-        <Link to="/alerts" active={location.pathname === '/alerts'}><Icon name="megaphone-outline" /></Link>
+        <Link to="/" active={location.pathname === '/'}>
+          <Icon name="home-outline" />
+        </Link>
+        <Link to="/orders" active={location.pathname === '/orders'}>
+          <Icon name="book-outline" />
+        </Link>
+        <Link to="/alerts" active={location.pathname === '/alerts'}>
+          <Icon name="megaphone-outline" />
+        </Link>
       </aside>
-      <Route component={<MainPage {...props} />} path="/" exact />
+      <Route component={<MainPage {...props} />} path="/x" exact />
       <Route component={<OrdersPage {...props} />} path="/orders" exact />
-      <Route component={<AlertsPage {...props} />} path="/alerts" exact />
-      { notification
-        && <Toast {...notification} /> }
+      <Route component={<AlertsPage {...props} />} path="/" exact />
+      {notification && <Toast {...notification} />}
     </div>
   );
 };
