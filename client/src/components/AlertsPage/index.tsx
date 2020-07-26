@@ -8,7 +8,7 @@ import Status from '../../containers/Status';
 import Header from '../Header';
 import styles from './styles';
 import RangeSlider from '../RangeSlider';
-import AlertItem from './AlertItem';
+import Alerts from '../../containers/Alerts';
 
 const AlertsPage = ({ assets, onRequestAssets, onRequestHistoricalData, historicalData }) => {
   // const onRequestTicker = (ticker: string) => {
@@ -18,13 +18,7 @@ const AlertsPage = ({ assets, onRequestAssets, onRequestHistoricalData, historic
     <Fragment>
       <main css={styles.main}>
         <div css={styles.mainGrid}>
-          <AlertItem
-            assets={assets}
-            historicalData={historicalData}
-            onRequestAssets={onRequestAssets}
-            onRequestHistoricalData={onRequestHistoricalData}
-            //onRequestTicker={onRequestTicker}
-          />
+          <Alerts />
         </div>
         <Status />
       </main>

@@ -3,6 +3,7 @@ import { createNotification } from './createNotification/index.ts';
 import { createOrder } from './createOrder/index.ts';
 import { getAccountData } from './getAccountData/index.ts';
 import { getAssets } from './getAssets/index.ts';
+import { getAlerts } from './getAlerts';
 import { getClock } from './getClock/index.ts';
 import { getHistoricalData } from './getHistoricalData/index.ts';
 import { getOrders } from './getOrders/index.ts';
@@ -13,12 +14,15 @@ import { saveLiveData, saveLiveDataSucceeded } from './saveLiveData/index.ts';
 import { saveLiveQuote } from './saveLiveQuote/index.ts';
 import { saveTradeUpdate } from './saveTradeUpdate/index.ts';
 import { updateConnectionStatus } from './updateConnectionStatus/index.ts';
+import { postAlert } from './postAlert';
+import { deleteAlert } from './deleteAlert';
 
 const actions = {
   cancelOrder,
   createNotification,
   createOrder,
   getAccountData,
+  getAlerts,
   getAssets,
   getClock,
   getHistoricalData,
@@ -31,6 +35,8 @@ const actions = {
   saveLiveQuote,
   saveTradeUpdate,
   updateConnectionStatus,
+  postAlert,
+  deleteAlert,
 };
 
 export default actions;

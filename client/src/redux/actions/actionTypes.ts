@@ -1,74 +1,40 @@
-import { 
-  GET_ACCOUNT_DATA_SUCCEEDED,
-  GET_ACCOUNT_DATA_ERRORED,
- } from './getAccountData';
+import { GET_ACCOUNT_DATA_SUCCEEDED, GET_ACCOUNT_DATA_ERRORED } from './getAccountData';
 
- import {
-   GET_CLOCK_SUCCEEDED,
-   GET_CLOCK_ERRORED,
- } from './getClock';
+import { GET_CLOCK_SUCCEEDED, GET_CLOCK_ERRORED } from './getClock';
 
- import {
-  REQUEST_LOGIN_SUCCEEDED,
-  REQUEST_LOGIN_ERRORED,
-} from './requestLogin';
+import { REQUEST_LOGIN_SUCCEEDED, REQUEST_LOGIN_ERRORED } from './requestLogin';
 
-import {
-  REQUEST_LOGOUT_SUCCEEDED,
-  REQUEST_LOGOUT_ERRORED,
-} from './requestLogout';
+import { REQUEST_LOGOUT_SUCCEEDED, REQUEST_LOGOUT_ERRORED } from './requestLogout';
 
-import {
-  SAVE_LIVE_DATA_SUCCEEDED
-} from './saveLiveData';
+import { SAVE_LIVE_DATA_SUCCEEDED } from './saveLiveData';
 
-import {
-  SAVE_LIVE_QUOTE_SUCCEEDED
-} from './saveLiveQuote';
+import { SAVE_LIVE_QUOTE_SUCCEEDED } from './saveLiveQuote';
 
-import {
-  GET_ORDERS_ERRORED,
-  GET_ORDERS_SUCCEEDED,
-} from './getOrders'
+import { GET_ORDERS_ERRORED, GET_ORDERS_SUCCEEDED } from './getOrders';
 
-import {
-  GET_ASSETS_ERRORED,
-  GET_ASSETS_SUCCEEDED,
-} from './getAssets'
+import { GET_ASSETS_ERRORED, GET_ASSETS_SUCCEEDED } from './getAssets';
 
-import {
-  GET_HISTORICAL_DATA_SUCCEEDED,
-  GET_HISTORICAL_DATA_ERRORED,
-} from './getHistoricalData';
+import { GET_HISTORICAL_DATA_SUCCEEDED, GET_HISTORICAL_DATA_ERRORED } from './getHistoricalData';
 
-import {
-  SAVE_TRADE_UPDATE_SUCCEEDED,
-} from './saveTradeUpdate';
+import { SAVE_TRADE_UPDATE_SUCCEEDED } from './saveTradeUpdate';
 
-import {
-  GET_POSITIONS_SUCCEEDED,
-  GET_POSITIONS_ERRORED,
-} from './getPositions';
+import { GET_POSITIONS_SUCCEEDED, GET_POSITIONS_ERRORED } from './getPositions';
 
-import {
-  UPDATE_CONNECTION_STATUS_SUCCEEDED,
-} from './updateConnectionStatus'
+import { UPDATE_CONNECTION_STATUS_SUCCEEDED } from './updateConnectionStatus';
 
-import { 
-  CREATE_ORDER_ERRORED,
-  CREATE_ORDER_SUCCEEDED,
-} from './createOrder';
+import { CREATE_ORDER_ERRORED, CREATE_ORDER_SUCCEEDED } from './createOrder';
 
-import {
-  CANCEL_ORDER_SUCCEEDED,
-} from './cancelOrder'
+import { CANCEL_ORDER_SUCCEEDED } from './cancelOrder';
 
-import {
-  CREATE_NOTIFICATION,
-} from  './createNotification'
+import { CREATE_NOTIFICATION } from './createNotification';
 
+import { GET_ALERTS_SUCCEEDED, GET_ALERTS_ERRORED } from './getAlerts';
 
- export {
+import { POST_ALERT_SUCCEEDED, POST_ALERT_ERRORED } from './postAlert';
+
+import { DELETE_ALERT_SUCCEEDED, DELETE_ALERT_ERRORED } from './deleteAlert';
+
+export {
   GET_ACCOUNT_DATA_SUCCEEDED,
   GET_ACCOUNT_DATA_ERRORED,
   GET_CLOCK_SUCCEEDED,
@@ -93,4 +59,10 @@ import {
   GET_ASSETS_ERRORED,
   CANCEL_ORDER_SUCCEEDED,
   CREATE_NOTIFICATION,
-}
+  GET_ALERTS_SUCCEEDED,
+  GET_ALERTS_ERRORED,
+  POST_ALERT_SUCCEEDED,
+  POST_ALERT_ERRORED,
+  DELETE_ALERT_SUCCEEDED,
+  DELETE_ALERT_ERRORED,
+};

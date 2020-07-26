@@ -30,6 +30,7 @@
   "dependencies": {
     "@types/cors": "^2.8.6",
     "@types/react-redux": "^7.1.9",
+    "aws-sdk": "^2.715.0",
     "axios": "^0.19.2",
     "bcrypt": "^5.0.0",
     "command-line-args": "^5.1.1",

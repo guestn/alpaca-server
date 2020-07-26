@@ -1,18 +1,19 @@
 export interface RootState {
-  assets: [],
-  accountData: {},
-  notifications: [],
-  historicalData: {},
+  alerts: [];
+  assets: [];
+  accountData: {};
+  notifications: [];
+  historicalData: {};
   connectionStatus: {
-    connection: boolean,
-    stream: boolean,
-  },
-  newOrders: [],
+    connection: boolean;
+    stream: boolean;
+  };
+  newOrders: [];
   user: {
-    displayName?: string,
-  },
-  liveData: {},
-  liveQuotes: {},
-  tradeUpdates: [],
-  orders: [],
+    displayName?: string;
+  };
+  liveData: {};
+  liveQuotes: {};
+  tradeUpdates: [];
+  orders: [];
 }

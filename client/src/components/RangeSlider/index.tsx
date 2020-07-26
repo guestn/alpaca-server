@@ -3,22 +3,52 @@ import React, { useState, createRef, MouseEvent } from 'react';
 import { css, jsx } from '@emotion/core';
 
 import { rangeSlider, slider, track, dragger, legendContainer, valueMarker } from './styles';
+import { cachedDataVersionTag } from 'v8';
+import { useEffect } from 'react';
 
 interface RangeSliderProps {
   min: number;
   max: number;
   center: number;
+  onChangeSlider: (left: number, right: number) => void;
 }
 
 const MARGIN_PX = 15;
 
 const SLIDER_WIDTH = 400;
 
-const RangeSlider = ({ min, max, center }: RangeSliderProps) => {
+const getValFromPixels = (pixels: number, sliderMin: number, scale: number) => {
+  const val = Math.floor(sliderMin + pixels * scale);
+  if (isNaN(val)) return 0;
+  return val;
+};
+
+const RangeSlider = ({ min, max, center, onChangeSlider }: RangeSliderProps) => {
   const trackRef = createRef<HTMLDivElement>();
   const [dragging, setDragging] = useState({ idx: 0 });
-  const [left, setLeft] = useState(SLIDER_WIDTH * 0.3);
-  const [right, setRight] = useState(SLIDER_WIDTH * 0.7);
+
+  let scale = (center * 0.1) / (SLIDER_WIDTH * 0.5);
+  let sliderMin = center * 0.9;
+  if (min < center * 0.9) {
+    scale = (center - min) / (SLIDER_WIDTH * 0.5);
+    sliderMin = min;
+  }
+  if (max > center * 1.1) {
+    scale = (max - center) / (SLIDER_WIDTH * 0.5);
+    sliderMin = min * scale;
+  }
+
+  const [left, setLeft] = useState((min - sliderMin) / scale || SLIDER_WIDTH * 0.3);
+  const [right, setRight] = useState((max - sliderMin) / scale || SLIDER_WIDTH * 0.7);
+
+  useEffect(() => {
+    setLeft((min - sliderMin) / scale);
+    setRight((max - sliderMin) / scale);
+  }, [center]);
+
+  // useEffect(() => {
+  //   onChangeSlider(getValFromPixels(left, sliderMin, scale), getValFromPixels(right, sliderMin, scale));
+  // }, [left, right]);
 
   const onMouseDown = (e: MouseEvent, idx: number) => {
     setDragging({ idx });
@@ -49,18 +79,14 @@ const RangeSlider = ({ min, max, center }: RangeSliderProps) => {
       setRight(left + MARGIN_PX);
     }
     setDragging({ idx: 0 });
+    onChangeSlider(getValFromPixels(left, sliderMin, scale), getValFromPixels(right, sliderMin, scale));
   };
 
   const onMouseLeave = (e: MouseEvent): void => {
     setDragging({ idx: 0 });
   };
 
-  const getValFromPixels = (pixels: number) => {
-    const scale = (max - min) / SLIDER_WIDTH;
-    return Math.floor(min + pixels * scale);
-  };
-
-  //console.log('left/right', left, right);
+  //console.log({ sliderMin, min, max, center, scale, left, right });
 
   return (
     <div css={rangeSlider(SLIDER_WIDTH)} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseLeave}>
@@ -72,8 +98,9 @@ const RangeSlider = ({ min, max, center }: RangeSliderProps) => {
         <div css={valueMarker} />
       </div>
       <div css={legendContainer}>
-        <span style={{ left }}>{getValFromPixels(left)}</span>
-        <span style={{ left: right }}> {getValFromPixels(right)}</span>
+        <span style={{ left }}>{getValFromPixels(left, sliderMin, scale)}</span>
+        <span style={{ left: right }}> {getValFromPixels(right, sliderMin, scale)}</span>
+        <span>{center}</span>
       </div>
     </div>
   );
