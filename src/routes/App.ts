@@ -27,6 +27,7 @@ export const checkAuth = () => {
 
 router.get('/account', checkAuth(), async (req: Request, res: Response) => {
   console.log('getAccount');
+  console.log('HEADERS', { headers });
   axios.get(`${apiRoot}/v2/account`, { headers }).then((response: AxiosResponse) => {
     try {
       res.send(response.data);

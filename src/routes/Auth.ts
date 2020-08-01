@@ -10,13 +10,12 @@ const router = Router();
 const userDao = new UserDao();
 const jwtService = new JwtService();
 
-
 /******************************************************************************
  *                      Login User - "POST /api/auth/login"
  ******************************************************************************/
 
 router.post('/login', async (req: Request, res: Response) => {
-  console.log('/login')
+  console.log('/login');
 
   let jwt = req.signedCookies[cookieProps.key];
 
@@ -27,8 +26,8 @@ router.post('/login', async (req: Request, res: Response) => {
       name: user?.name,
       email: user?.email,
       role: user?.role,
-    }
-    return res.json({ user: parsedUser })
+    };
+    return res.json({ user: parsedUser });
   }
 
   // Check email and password present
@@ -40,7 +39,7 @@ router.post('/login', async (req: Request, res: Response) => {
   }
   // Fetch user
   const user = await userDao.getOne(email);
-  console.log({user})
+  console.log({ user });
   if (!user) {
     return res.status(UNAUTHORIZED).json({
       error: loginFailedErr,
@@ -50,7 +49,7 @@ router.post('/login', async (req: Request, res: Response) => {
   const pwdPassed = await bcrypt.compare(password, user.pwdHash);
   if (!pwdPassed) {
     return res.status(UNAUTHORIZED).json({
-        error: loginFailedErr,
+      error: loginFailedErr,
     });
   }
   // Setup Admin Cookie
@@ -58,26 +57,24 @@ router.post('/login', async (req: Request, res: Response) => {
     id: user.id,
     role: user.role,
   });
-    
+
   const { key, options } = cookieProps;
   res.cookie(key, jwt, options);
-
-  return res.json({ user: { email }})
+  console.log('COOKIE', key, jwt, options);
+  return res.json({ user: { email } });
   // return res.status(OK).end();
 });
-
 
 /******************************************************************************
  *                      Logout - "GET /api/auth/logout"
  ******************************************************************************/
 
 router.get('/logout', async (req: Request, res: Response) => {
-  console.log('logout')
+  console.log('logout');
   const { key, options } = cookieProps;
   res.clearCookie(key, options);
   return res.status(OK).end();
 });
-
 
 /******************************************************************************
  *                                 Export Router
