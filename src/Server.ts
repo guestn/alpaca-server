@@ -51,12 +51,14 @@ app.use((req, res, next) => {
   next();
 });
 
-const proxyMiddleware = createProxyMiddleware({
-  target: 'http://localhost:3000',
-  changeOrigin: true,
-});
+if (process.env.NODE_ENV === 'development') {
+  const proxyMiddleware = createProxyMiddleware({
+    target: 'http://localhost:3000',
+    changeOrigin: true,
+  });
 
-app.use('/', proxyMiddleware);
+  app.use('/', proxyMiddleware);
+}
 
 /************************************************************************************
  *                              Serve front-end content

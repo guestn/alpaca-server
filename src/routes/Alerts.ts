@@ -6,6 +6,7 @@ import { apiRoot, headers } from '../config';
 import { checkAuth } from './App';
 import AWS from 'aws-sdk';
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
+import { sendEmail } from '../notifications';
 
 let serviceConfigOptions: ServiceConfigurationOptions = {
   region: 'us-west-2',
@@ -65,6 +66,10 @@ router.post('/alerts', checkAuth(), async (req: Request, res: Response) => {
       console.error('Unable to add item. Error JSON:', JSON.stringify(err, null, 2));
     } else {
       console.log('Added item:', JSON.stringify(data, null, 2));
+      sendEmail({
+        subject: `Successful alert created for ${params.Item.ticker}: ${params.Item.low} / ${params.Item.high}`,
+        text: `Successful alert created for ${params.Item.ticker}: ${params.Item.low} / ${params.Item.high}`,
+      });
       res.send(params.Item);
     }
   });

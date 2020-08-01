@@ -28,6 +28,7 @@
     "@server": "dist/Server"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.2.2",
     "@types/cors": "^2.8.6",
     "@types/react-redux": "^7.1.9",
     "aws-sdk": "^2.715.0",

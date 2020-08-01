@@ -42,7 +42,9 @@ const reducer = (state = initialState, action: Action) => {
     case at.GET_ALERTS_ERRORED:
       return { ...state, lastError: action.error };
     case at.GET_HISTORICAL_DATA_SUCCEEDED:
-      return { ...state, historicalData: action.data };
+      console.log({ a: action.data });
+      //const key = Object.keys(action.data)
+      return { ...state, historicalData: { ...state.historicalData, ...action.data } };
     case at.SAVE_LIVE_DATA_SUCCEEDED:
       return {
         ...state,

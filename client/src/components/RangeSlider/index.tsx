@@ -46,10 +46,6 @@ const RangeSlider = ({ min, max, center, onChangeSlider }: RangeSliderProps) => 
     setRight((max - sliderMin) / scale);
   }, [center]);
 
-  // useEffect(() => {
-  //   onChangeSlider(getValFromPixels(left, sliderMin, scale), getValFromPixels(right, sliderMin, scale));
-  // }, [left, right]);
-
   const onMouseDown = (e: MouseEvent, idx: number) => {
     setDragging({ idx });
   };

@@ -4,18 +4,12 @@ import React, { useEffect } from 'react';
 import Select from 'react-select';
 import { func, array, string } from 'prop-types';
 
-
 import styles from './styles';
 
-const TickerSelector = ({
-  assets,
-  onRequestAssets,
-  onRequestTicker,
-  ticker,
-}) => {
+const TickerSelector = ({ assets, onRequestAssets, onRequestTicker, ticker }) => {
   useEffect(() => {
     onRequestAssets();
-  }, []);
+  }, [ticker]);
 
   return (
     <form css={styles.container}>
@@ -23,7 +17,7 @@ const TickerSelector = ({
         styles={styles.select}
         value={{ label: ticker, value: 0 }}
         options={assets.map((a, idx) => ({ label: a.symbol, value: idx }))}
-        onChange={(opt) => onRequestTicker(opt.label)}
+        onChange={(option) => onRequestTicker(option.label)}
       />
     </form>
   );

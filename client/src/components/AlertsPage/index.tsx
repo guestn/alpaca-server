@@ -1,23 +1,16 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
-import React, { useEffect, useState, Fragment } from 'react';
-import { func, string, object } from 'prop-types';
-import Orders from '../../containers/Orders';
-import Positions from '../../containers/Positions';
+import React, { Fragment } from 'react';
 import Status from '../../containers/Status';
-import Header from '../Header';
-import styles from './styles';
-import RangeSlider from '../RangeSlider';
 import Alerts from '../../containers/Alerts';
 
-const AlertsPage = ({ assets, onRequestAssets, onRequestHistoricalData, historicalData }) => {
-  // const onRequestTicker = (ticker: string) => {
-  //   console.log(t);
-  // };
+import { main, mainGrid } from './styles';
+
+const AlertsPage = () => {
   return (
     <Fragment>
-      <main css={styles.main}>
-        <div css={styles.mainGrid}>
+      <main css={main}>
+        <div css={mainGrid}>
           <Alerts />
         </div>
         <Status />
@@ -25,14 +18,6 @@ const AlertsPage = ({ assets, onRequestAssets, onRequestHistoricalData, historic
       <Status />
     </Fragment>
   );
-};
-
-AlertsPage.propTypes = {
-  clock: object,
-  firebase: object,
-  onRequestClock: func,
-  onRequestLogout: func,
-  user: object,
 };
 
 export default AlertsPage;

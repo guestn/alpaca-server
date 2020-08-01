@@ -2,7 +2,6 @@ import AWS from 'aws-sdk';
 
 AWS.config.update({
   region: 'us-west-2',
-  endpoint: 'http://localhost:9000',
 });
 
 var dynamodb = new AWS.DynamoDB();

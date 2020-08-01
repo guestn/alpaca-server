@@ -2,22 +2,19 @@
 
 import typography from '../../styles/typography';
 import colors from '../../styles/colors';
-import buttonStyles from '../../components/Button/styles';
+import { buttonStyle } from '../../components/Button/styles';
+import { css } from '@emotion/core';
 
-const styles = {
-  base: (active: boolean, disabled: boolean, isButton: boolean, styleOverrides: {}, type: string) => {
-    if (isButton) {
-      return buttonStyles.button(active, disabled, type);
-    }
-    return {
+export const base = (active: boolean, disabled: boolean, isButton: boolean, styleOverrides: {}, type: string) => {
+  if (isButton) {
+    return buttonStyle(active, disabled, type);
+  }
+  return {
+    ...typography.base,
+    a: {
       ...typography.base,
-      a: {
-        ...typography.base,
-      },
-      border: active ? `1px solid ${colors.mg}`: 'none',
-      ...styleOverrides,
-    };
-  },
+    },
+    border: active ? `1px solid ${colors.mg}` : 'none',
+    ...styleOverrides,
+  };
 };
-
-export default styles;

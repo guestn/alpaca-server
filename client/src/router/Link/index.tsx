@@ -2,20 +2,20 @@
 import { css, jsx, InterpolationWithTheme } from '@emotion/core';
 import React, { MouseEvent, Node, AnchorHTMLAttributes } from 'react';
 import { historyPush, historyReplace } from '..';
-import styles from './styles.ts';
+import { base } from './styles.ts';
 
 interface Params {
-  active: boolean,
-  children: Node,
-  cssOverrides: object | InterpolationWithTheme<any>,
-  disabled: boolean,
-  icon: string,
-  isButton: boolean,
-  replace: boolean,
-  styleOverrides: object,
-  title: string,
-  to: string,
-  type: string,
+  active: boolean;
+  children: Node;
+  cssOverrides: object | InterpolationWithTheme<any>;
+  disabled: boolean;
+  icon: string;
+  isButton: boolean;
+  replace: boolean;
+  styleOverrides: object;
+  title: string;
+  to: string;
+  type: string;
 }
 
 const Link = ({
@@ -30,7 +30,7 @@ const Link = ({
   title,
   to,
   type,
-}: Params):AnchorHTMLAttributes<any> => {
+}: Params): AnchorHTMLAttributes<any> => {
   const handleClick = (e: MouseEvent) => {
     e.preventDefault();
     return replace ? historyReplace(to) : historyPush(to);
@@ -40,11 +40,11 @@ const Link = ({
     <a
       href={to}
       onClick={handleClick}
-      css={cssOverrides || styles.base(active, disabled, isButton, styleOverrides, type)}
+      css={cssOverrides || base(active, disabled, isButton, styleOverrides, type)}
       title={title}
     >
-      { children }
-      { icon && <i className={`icon ion-md-${icon}`} /> }
+      {children}
+      {icon && <i className={`icon ion-md-${icon}`} />}
     </a>
   );
 };

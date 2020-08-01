@@ -4,8 +4,16 @@ import spacing from '../../../styles/spacing';
 import colors from '../../../styles/colors';
 
 export const container = css({
-  padding: `0 0 ${spacing.unit * 8} 0`,
+  padding: `${spacing.unit * 1}`,
   border: `1px solid ${colors.text}`,
   display: 'flex',
-  height: 100,
+  height: spacing.unit * 14,
+  justifyContent: 'space-between',
+  marginBottom: spacing.unit * 2,
+});
+
+export const buttonContainer = css({
+  display: 'flex',
+  alignItems: 'space-around',
+  flexDirection: 'column',
 });

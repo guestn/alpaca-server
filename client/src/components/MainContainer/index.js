@@ -48,9 +48,9 @@ const MainContainer = (props) => {
           <Icon name="megaphone-outline" />
         </Link>
       </aside>
-      <Route component={<MainPage {...props} />} path="/x" exact />
+      <Route component={<MainPage {...props} />} path="/" exact />
       <Route component={<OrdersPage {...props} />} path="/orders" exact />
-      <Route component={<AlertsPage {...props} />} path="/" exact />
+      <Route component={<AlertsPage {...props} />} path="/alerts" exact />
       {notification && <Toast {...notification} />}
     </div>
   );

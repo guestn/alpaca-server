@@ -1,14 +1,15 @@
 /** @jsx jsx */
 import colors from '../../styles/colors';
 import spacing from '../../styles/spacing';
+import { css } from '@emotion/core';
+import { ButtonType } from './';
 
 const hover = (type) => ({
   backgroundColor: type === 'invisible' ? colors.mg : colors.hilite,
   cursor: 'pointer',
 });
 
-
-const getBackgroundColor = (active, type) => {
+const getBackgroundColor = (active: boolean, type) => {
   if (type === 'invisible' || type === 'outline') {
     if (active) return colors.mg;
     return 'transparent';
@@ -16,8 +17,8 @@ const getBackgroundColor = (active, type) => {
   return colors.hilite;
 };
 
-const styles = {
-  button: (active, disabled, type) => ({
+export const buttonStyle = (active: boolean, disabled: boolean, type: ButtonType) =>
+  css({
     alignItems: 'center',
     backgroundColor: getBackgroundColor(active, type),
     border: type === 'outline' ? `1px solid ${colors.text}` : 'none',
@@ -34,7 +35,4 @@ const styles = {
       fontSize: 20,
     },
     ':hover': hover(type),
-  }),
-};
-
-export default styles;
+  });

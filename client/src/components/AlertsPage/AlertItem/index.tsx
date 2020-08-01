@@ -1,13 +1,13 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
-import React, { useEffect, useState, Fragment } from 'react';
-import { container } from './styles.ts';
+import React, { useEffect, useState } from 'react';
+import { container, buttonContainer } from './styles';
 import RangeSlider from '../../RangeSlider';
 import TickerSelector from '../../MainPage/TickerSelector';
 import Button from '../../Button';
 import { scales } from '../../MainPage/helpers';
 import { uuid } from 'uuidv4';
-import { cachedDataVersionTag } from 'v8';
+import { format } from 'date-fns';
 interface AlertItemProps {
   assets: [];
   historicalData: { [ticker: string]: [{ c: number }] };
@@ -15,12 +15,14 @@ interface AlertItemProps {
   onRequestTicker: () => void;
   onRequestHistoricalData: ({}) => void;
   onPostAlert: ({}) => void;
-  onDeleteAlert: (id: number) => void;
+  onDeleteAlert: (id: string) => void;
   ticker: string;
   low: number;
   high: number;
+  mid: number;
   isNew: boolean;
   id: string;
+  createdAt: string;
 }
 
 const AlertItem = ({
@@ -33,24 +35,25 @@ const AlertItem = ({
   ticker,
   low,
   high,
+  mid,
   isNew,
+  createdAt,
   id,
 }: AlertItemProps) => {
-  console.log('ddd', historicalData[ticker]);
   const [lastPrice, setLastPrice] = useState(0);
+  const [theTicker, setTicker] = useState(ticker || 'AAPL');
 
   useEffect(() => {
-    const lp = historicalData[ticker] && historicalData[ticker][0].c;
+    const lp = historicalData[theTicker] && historicalData[theTicker].length && historicalData[theTicker][0].c;
     setLastPrice(lp);
   }, [historicalData]);
 
-  const [theTicker, setTicker] = useState(ticker || 'AAPL');
   console.log('item', low, high);
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
 
   useEffect(() => {
-    onRequestHistoricalData({ ...scales.DAY, symbols: ticker });
+    onRequestHistoricalData({ ...scales.DAY, symbols: theTicker });
     return () => {};
   }, [theTicker]);
 
@@ -60,7 +63,7 @@ const AlertItem = ({
   };
 
   const onRequestTicker = (theTicker: string) => setTicker(theTicker);
-  console.log({ min, max, lastPrice });
+
   return (
     <section css={container}>
       <RangeSlider
@@ -69,22 +72,29 @@ const AlertItem = ({
         center={lastPrice}
         onChangeSlider={onChangeSlider}
       />
-      {isNew ? (
-        <TickerSelector
-          assets={assets}
-          onRequestAssets={onRequestAssets}
-          onRequestTicker={onRequestTicker}
-          ticker={theTicker}
+      <div>
+        {isNew ? (
+          <TickerSelector
+            assets={assets}
+            onRequestAssets={onRequestAssets}
+            onRequestTicker={onRequestTicker}
+            ticker={theTicker}
+          />
+        ) : (
+          ticker
+        )}
+        <div>{lastPrice}</div>
+        {!isNew && <div>{`This alert was set when price was ${mid}`}</div>}
+        {!isNew && <div>{`created: ${format(new Date(createdAt), 'MM/dd HH:mm:ss')}`}</div>}
+      </div>
+      <div css={buttonContainer}>
+        {/* <Button
+          // disabled
+          label={isNew ? 'Save Alert' : 'Update Alert'}
+          onClick={() => onPostAlert({ ticker: theTicker, low: min, high: max, id: id || uuid(), mid: lastPrice })}
         />
-      ) : (
-        ticker
-      )}
-      <div>{lastPrice}</div>
-      <Button
-        label={isNew ? 'Save Alert' : 'Update Alert'}
-        onClick={() => onPostAlert({ ticker: theTicker, low: min, high: max, id: id || uuid(), mid: lastPrice })}
-      />
-      <Button label={isNew ? 'Cancel' : 'Delete'} onClick={() => onDeleteAlert(id)} />
+        <Button label={isNew ? 'Cancel' : 'Delete'} onClick={() => onDeleteAlert(id)} /> */}
+      </div>
     </section>
   );
 };

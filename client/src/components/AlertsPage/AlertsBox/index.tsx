@@ -26,6 +26,10 @@ const AlertsBox = ({
   }, []);
   console.log({ alerts });
   console.log({ showNew });
+  const onRequestPostAlert = (data) => {
+    onPostAlert(data);
+    setShowNew(false);
+  };
   //if (alerts.length === 0) {
   return (
     <Fragment>
@@ -35,14 +39,15 @@ const AlertsBox = ({
             ticker={alertItem.ticker}
             low={alertItem.low}
             high={alertItem.high}
+            mid={alertItem.mid}
+            createdAt={alertItem.createdAt}
             assets={assets}
             historicalData={historicalData}
             onRequestAssets={onRequestAssets}
             onRequestHistoricalData={onRequestHistoricalData}
-            onPostAlert={onPostAlert}
+            onPostAlert={onRequestPostAlert}
             onDeleteAlert={onDeleteAlert}
             id={alertItem.id}
-            //onRequestTicker={onRequestTicker}
           />
         ))}
       {showNew ? (
@@ -53,7 +58,7 @@ const AlertsBox = ({
           historicalData={historicalData}
           onRequestAssets={onRequestAssets}
           onRequestHistoricalData={onRequestHistoricalData}
-          onPostAlert={onPostAlert}
+          onPostAlert={onRequestPostAlert}
           onDeleteAlert={() => setShowNew(false)}
           isNew
           //onRequestTicker={onRequestTicker}
