@@ -68,7 +68,7 @@ const styles = {
     'ion-icon': {
       fontSize: 24,
       minWidth: 24,
-    }
+    },
   },
 };
 

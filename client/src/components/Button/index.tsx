@@ -10,27 +10,27 @@ export enum ButtonType {
 }
 
 interface ButtonProps {
-  active: boolean;
+  active?: boolean;
   buttonType: string;
-  disabled: boolean;
-  icon: string;
+  disabled?: boolean;
+  icon?: string;
   label: string;
   onClick: () => void;
-  title: string;
-  type: ButtonType;
+  title?: string;
+  type?: ButtonType;
 }
 
 const Button = ({ active, buttonType = 'button', disabled, icon, label, onClick, title, type }: ButtonProps) => (
   <button
     css={buttonStyle(active, disabled, type)}
     disabled={disabled}
-    type={buttonType}
+    //type={buttonType}
     onClick={(e) => {
       e.preventDefault();
       e.stopPropagation();
       onClick();
     }}
-    title={title}
+    title={title || label}
   >
     {label}
     {icon && <i className={`icon ion-md-${icon}`} />}

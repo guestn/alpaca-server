@@ -1,36 +1,90 @@
-import sgMail from '@sendgrid/mail';
+import { docClient } from '../routes/Alerts';
+import { AttributeMap, AttributeValue } from 'aws-sdk/clients/dynamodb';
+import { DocumentClient as DocClient } from 'aws-sdk/lib/dynamodb/document_client';
+import { sendEmail } from './email';
 
-const apiKey = process.env.SENDGRID_API_KEY || '';
-sgMail.setApiKey(apiKey);
-
-const params = {
-  to: process.env.TO_EMAIL || '',
-  from: process.env.TO_EMAIL || '', // Use the email address or domain you verified above
-  subject: 'Sending with Twilio SendGrid is Fun',
-  text: 'and easy to do anywhere, even with Node.js',
-  html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-};
-
-interface MessageParams {
-  subject: string;
-  text: string;
+interface CheckAlertsArgs {
+  ticker: string;
+  data: { P: number };
 }
 
-export const sendEmail = async ({ subject, text }: MessageParams) => {
-  const msg = {
-    to: params.to,
-    from: params.from,
-    subject,
-    text,
-    html: `<strong>${text}</strong>`,
-  };
+interface Alert extends AttributeMap {
+  high: AttributeValue; //string | number,
+  low: AttributeValue; //string | number
+}
 
-  try {
-    await sgMail.send(msg);
-  } catch (e) {
-    console.error(e);
-    if (e.response) {
-      console.error(e.response.body);
+interface Data {
+  Items: Alert[];
+}
+
+export const checkAlerts = async ({ ticker, data }: CheckAlertsArgs) => {
+  const alert: any = await getAlert(ticker);
+  console.log({ alert, dP: data.P });
+  if (!alert) return;
+
+  const { id } = alert;
+  let message;
+  if (alert.high < data.P && !alert.highSent) {
+    console.log('it is TOO high');
+    const highSent = new Date().toISOString();
+    updateAlert({ alert, highSent });
+    message = `${ticker} went ABOVE ${alert.high} and is now ${data.P}`;
+  }
+  if (alert.low > data.P && !alert.lowSent) {
+    console.log('it is TOO low');
+    const lowSent = new Date().toISOString();
+    updateAlert({ alert, lowSent });
+    message = `${ticker} went BELOW ${alert.high} and is now ${data.P}`;
+  }
+  console.log({ message });
+
+  if (message) {
+    sendEmail({ subject: message, text: message });
+  }
+};
+
+interface UpdateArgs {
+  alert: Alert;
+  highSent?: string;
+  lowSent?: string;
+}
+
+export const updateAlert = ({ alert, highSent, lowSent }: UpdateArgs) => {
+  const params = {
+    TableName: 'Alerts',
+    Item: {
+      ...alert,
+      highSent: highSent || alert.highSent,
+      lowSent: lowSent || alert.lowSent,
+    },
+  };
+  docClient.put(params, (err, data) => {
+    if (err) {
+      console.error('Unable to update item. Error JSON:', JSON.stringify(err, null, 2));
+    } else {
+      console.log('Updated item:', JSON.stringify(data, null, 2));
     }
+  });
+};
+
+export const getAlert = async (ticker: string) => {
+  const params = {
+    TableName: 'Alerts',
+    // Key: {
+    //   ticker,
+    //   //"title": title
+    // },
+  };
+  try {
+    const data: any = await docClient.scan(params).promise();
+
+    console.log('Scan succeeded:', JSON.stringify(data, null, 2));
+    const parsedData = data;
+
+    const alert = parsedData && parsedData.Items && parsedData.Items.find((item: any) => item.ticker === ticker);
+    console.log({ xxx: alert });
+    return alert;
+  } catch (e) {
+    console.error('Unable to read item. Error JSON:', JSON.stringify(e, null, 2));
   }
 };

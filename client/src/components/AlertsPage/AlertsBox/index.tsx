@@ -3,11 +3,16 @@ import { jsx, css } from '@emotion/core';
 import React, { useEffect, useState, Fragment } from 'react';
 import AlertItem from '../AlertItem';
 import Button from '../../Button';
-import { cachedDataVersionTag } from 'v8';
-
+import { AlertItemProps, OnPostAlertArgs } from '../AlertItem';
 interface AlertsBoxProps {
   alerts: [];
+  assets: [];
   onRequestAlerts: () => void;
+  historicalData: {};
+  onRequestHistoricalData: () => void;
+  onRequestAssets: () => void;
+  onPostAlert: (data: OnPostAlertArgs) => void;
+  onDeleteAlert: () => void;
 }
 
 const AlertsBox = ({
@@ -26,7 +31,7 @@ const AlertsBox = ({
   }, []);
   console.log({ alerts });
   console.log({ showNew });
-  const onRequestPostAlert = (data) => {
+  const onRequestPostAlert = (data: OnPostAlertArgs) => {
     onPostAlert(data);
     setShowNew(false);
   };
@@ -34,7 +39,7 @@ const AlertsBox = ({
   return (
     <Fragment>
       {alerts.length > 0 &&
-        alerts.map((alertItem) => (
+        alerts.map((alertItem: AlertItemProps) => (
           <AlertItem
             ticker={alertItem.ticker}
             low={alertItem.low}
@@ -48,12 +53,12 @@ const AlertsBox = ({
             onPostAlert={onRequestPostAlert}
             onDeleteAlert={onDeleteAlert}
             id={alertItem.id}
+            lowSent={alertItem.lowSent}
+            highSent={alertItem.highSent}
           />
         ))}
       {showNew ? (
         <AlertItem
-          //ticker={alertItem.ticker}
-          //data={JSON.parse(alertItem.data)}
           assets={assets}
           historicalData={historicalData}
           onRequestAssets={onRequestAssets}
@@ -61,7 +66,6 @@ const AlertsBox = ({
           onPostAlert={onRequestPostAlert}
           onDeleteAlert={() => setShowNew(false)}
           isNew
-          //onRequestTicker={onRequestTicker}
         />
       ) : (
         <Button label="Create New" onClick={() => setShowNew(true)} />

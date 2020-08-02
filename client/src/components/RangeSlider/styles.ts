@@ -8,7 +8,7 @@ export const rangeSlider = (width: number) =>
     flexDirection: 'column',
     padding: 20,
     width: width + 40,
-    height: 100,
+    height: 130,
     boxSizing: 'border-box',
   });
 
@@ -20,11 +20,12 @@ export const legendContainer = css({
     display: 'flex',
     justifyContent: 'center',
     width: 0,
+    textAlign: 'center',
     '&:last-of-type': {
       left: 0,
       right: 0,
       fontSize: 20,
-      top: 30,
+      top: 50,
       margin: '0 auto',
     },
   },

@@ -1,12 +1,13 @@
 import { Request, Response, Router, RequestHandler, NextFunction } from 'express';
 import { BAD_REQUEST, OK, UNAUTHORIZED } from 'http-status-codes';
 import axios, { AxiosResponse } from 'axios';
+import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
 
 import { apiRoot, headers } from '../config';
 import { checkAuth } from './App';
 import AWS from 'aws-sdk';
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
-import { sendEmail } from '../notifications';
+import { sendEmail } from '../notifications/email';
 
 let serviceConfigOptions: ServiceConfigurationOptions = {
   region: 'us-west-2',
@@ -18,7 +19,7 @@ let serviceConfigOptions: ServiceConfigurationOptions = {
 //   endpoint: 'http://localhost:9000',
 // });
 
-var docClient = new AWS.DynamoDB.DocumentClient({
+export const docClient: DocumentClient = new AWS.DynamoDB.DocumentClient({
   region: 'us-west-2',
   endpoint: 'http://localhost:8000',
   convertEmptyValues: true,
@@ -29,7 +30,7 @@ const router = Router();
 router.get('/alerts', checkAuth(), async (req: Request, res: Response) => {
   console.log('getAlerts');
 
-  var params = {
+  const params = {
     TableName: 'Alerts',
   };
 
@@ -47,7 +48,7 @@ router.get('/alerts', checkAuth(), async (req: Request, res: Response) => {
 router.post('/alerts', checkAuth(), async (req: Request, res: Response) => {
   const date = new Date();
   const createdAt = date.toISOString();
-  var params = {
+  const params = {
     TableName: 'Alerts',
     Item: {
       ticker: req.body.ticker,
@@ -85,7 +86,6 @@ router.delete('/alerts/:id', checkAuth(), async (req: Request, res: Response) =>
       ticker: 'AAPL',
     },
   };
-  console.log({ params });
 
   console.log('Deleting item...');
   docClient.delete(params, function (err, data) {

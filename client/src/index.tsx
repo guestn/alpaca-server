@@ -24,9 +24,10 @@ firebase.initializeApp(firebaseConfig);
 
 const rootElement = document.getElementById('root');
 
-ReactDOM.render((
+ReactDOM.render(
   <Provider store={store}>
-    <WebsocketSubscriber />
+    {/* <WebsocketSubscriber /> */}
     <App firebase={firebase} />
-  </Provider>
-), rootElement);
+  </Provider>,
+  rootElement
+);

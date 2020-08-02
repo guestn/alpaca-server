@@ -7,13 +7,13 @@ export const container = css({
   padding: `${spacing.unit * 1}`,
   border: `1px solid ${colors.text}`,
   display: 'flex',
-  height: spacing.unit * 14,
+  height: spacing.unit * 16,
   justifyContent: 'space-between',
   marginBottom: spacing.unit * 2,
 });
 
 export const buttonContainer = css({
   display: 'flex',
-  alignItems: 'space-around',
+  justifyContent: 'space-between',
   flexDirection: 'column',
 });

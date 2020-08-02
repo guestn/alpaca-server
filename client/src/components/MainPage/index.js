@@ -35,7 +35,7 @@ const MainPage = ({
   }, [ticker]);
 
   const onRequestTicker = (theTicker) => {
-    setTicker(theTicker);    
+    setTicker(theTicker);
     onRequestHistoricalData({ ...scales[duration], symbols: theTicker });
   };
 
@@ -56,10 +56,7 @@ const MainPage = ({
       <div css={styles.mainGrid}>
         <LiveDataBox liveData={liveData && liveData[ticker]} ticker={ticker} />
         <Orders type="compact" notCanceled />
-        <TradeBox
-          onCreateOrder={onCreateOrder}
-          ticker={ticker}
-        />
+        <TradeBox onCreateOrder={onCreateOrder} ticker={ticker} />
         <Account />
         <CandlestickChart
           assets={assets}

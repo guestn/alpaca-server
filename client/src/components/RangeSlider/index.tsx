@@ -1,26 +1,31 @@
 /** @jsx jsx */
-import React, { useState, createRef, MouseEvent } from 'react';
+import React, { useState, useEffect, createRef, MouseEvent } from 'react';
 import { css, jsx } from '@emotion/core';
 
 import { rangeSlider, slider, track, dragger, legendContainer, valueMarker } from './styles';
 import { cachedDataVersionTag } from 'v8';
-import { useEffect } from 'react';
 
 interface RangeSliderProps {
   min: number;
   max: number;
   center: number;
-  onChangeSlider: (left: number, right: number) => void;
+  onChangeSlider: (left: number, right: number, enableUpdate: boolean) => void;
 }
 
 const MARGIN_PX = 15;
-
 const SLIDER_WIDTH = 400;
 
-const getValFromPixels = (pixels: number, sliderMin: number, scale: number) => {
-  const val = Math.floor(sliderMin + pixels * scale);
+const getValFromPixels = (pixels: number, sliderMin: number, scale: number): number => {
+  const val = sliderMin + pixels * scale;
   if (isNaN(val)) return 0;
-  return val;
+
+  const roundedVal = val < 100 ? val.toFixed(1) : val.toFixed(0);
+  return parseFloat(roundedVal);
+};
+
+const getPercentChange = (pixels: number, sliderMin: number, scale: number, center: number) => {
+  const val = getValFromPixels(pixels, sliderMin, scale);
+  return (100 * val) / center;
 };
 
 const RangeSlider = ({ min, max, center, onChangeSlider }: RangeSliderProps) => {
@@ -75,7 +80,9 @@ const RangeSlider = ({ min, max, center, onChangeSlider }: RangeSliderProps) => 
       setRight(left + MARGIN_PX);
     }
     setDragging({ idx: 0 });
-    onChangeSlider(getValFromPixels(left, sliderMin, scale), getValFromPixels(right, sliderMin, scale));
+    const enableUpdate = leftDisplayVal !== min || rightDisplayVal !== max;
+
+    onChangeSlider(getValFromPixels(left, sliderMin, scale), getValFromPixels(right, sliderMin, scale), enableUpdate);
   };
 
   const onMouseLeave = (e: MouseEvent): void => {
@@ -83,6 +90,12 @@ const RangeSlider = ({ min, max, center, onChangeSlider }: RangeSliderProps) => 
   };
 
   //console.log({ sliderMin, min, max, center, scale, left, right });
+  const leftDisplayVal = getValFromPixels(left, sliderMin, scale);
+  const leftPercentage = getPercentChange(left, sliderMin, scale, center).toFixed(1);
+  const rightDisplayVal = getValFromPixels(right, sliderMin, scale);
+  const rightPercentage = getPercentChange(right, sliderMin, scale, center).toFixed(1);
+
+  console.log({ min, leftDisplayVal });
 
   return (
     <div css={rangeSlider(SLIDER_WIDTH)} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseLeave}>
@@ -94,8 +107,8 @@ const RangeSlider = ({ min, max, center, onChangeSlider }: RangeSliderProps) => 
         <div css={valueMarker} />
       </div>
       <div css={legendContainer}>
-        <span style={{ left }}>{getValFromPixels(left, sliderMin, scale)}</span>
-        <span style={{ left: right }}> {getValFromPixels(right, sliderMin, scale)}</span>
+        <span style={{ left }}>{`${leftDisplayVal} (${leftPercentage}%)`}</span>
+        <span style={{ left: right }}>{`${rightDisplayVal} (${rightPercentage}%)`}</span>
         <span>{center}</span>
       </div>
     </div>
