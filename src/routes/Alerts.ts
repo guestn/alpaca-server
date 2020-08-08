@@ -9,10 +9,10 @@ import AWS from 'aws-sdk';
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
 import { sendEmail } from '../notifications/email';
 
-let serviceConfigOptions: ServiceConfigurationOptions = {
-  region: 'us-west-2',
-  endpoint: 'http://localhost:8000',
-};
+// let serviceConfigOptions: ServiceConfigurationOptions = {
+//   region: 'us-west-2',
+//   //  endpoint: 'http://localhost:8000',
+// };
 
 // AWS.config.update({
 //   region: 'us-west-2',
@@ -21,17 +21,20 @@ let serviceConfigOptions: ServiceConfigurationOptions = {
 
 export const docClient: DocumentClient = new AWS.DynamoDB.DocumentClient({
   region: 'us-west-2',
-  endpoint: 'http://localhost:8000',
+  //endpoint: 'http://localhost:8000',
   convertEmptyValues: true,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
 const router = Router();
 
 router.get('/alerts', checkAuth(), async (req: Request, res: Response) => {
-  console.log('getAlerts');
+  console.log('getAlerts', docClient);
+  console.log({ accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY });
 
   const params = {
-    TableName: 'Alerts',
+    TableName: 'Alpaca-Alerts',
   };
 
   docClient.scan(params, function (e, data) {
@@ -49,7 +52,7 @@ router.post('/alerts', checkAuth(), async (req: Request, res: Response) => {
   const date = new Date();
   const createdAt = date.toISOString();
   const params = {
-    TableName: 'Alerts',
+    TableName: 'Alpaca-Alerts',
     Item: {
       ticker: req.body.ticker,
       low: req.body.low,

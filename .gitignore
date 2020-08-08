@@ -16,7 +16,7 @@
 .env.development.local
 .env.test.local
 .env.production.local
-development.eng
+development.env
 production.env
 test.env
 
