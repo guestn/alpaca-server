@@ -1,11 +1,13 @@
 /** @jsx jsx */
+import { css } from '@emotion/core';
 import colors from '../../styles/colors';
 import spacing from '../../styles/spacing';
+import { NoteType } from '../../redux/actions/createNotification';
 
-const styles = {
-  container: (noteType) => ({
+export const container = (noteType: NoteType) =>
+  css({
     alignItems: 'center',
-    backgroundColor: (noteType === 'OK') ? colors.ok : colors.error,
+    backgroundColor: noteType === 'OK' ? colors.ok : colors.error,
     borderRadius: `${spacing.br}px ${spacing.br}px 0 0`,
     bottom: 0,
     color: colors.white,
@@ -17,7 +19,4 @@ const styles = {
     padding: spacing.unit,
     position: 'fixed',
     right: spacing.gridGap,
-  }),
-};
-
-export default styles;
+  });
