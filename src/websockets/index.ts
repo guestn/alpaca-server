@@ -84,7 +84,7 @@ const sampleMsg = {
   data: {
     P: 1505,
     S: 1,
-    T: 'TSLA',
+    T: 'AAPL',
     X: 15,
     c: [1],
     ev: 'Q',
@@ -93,7 +93,7 @@ const sampleMsg = {
     t: 1589918457110369500,
     x: 2,
   },
-  stream: 'Q.TSLA',
+  stream: 'Q.AAPL',
 };
 
 const doSample = () => {

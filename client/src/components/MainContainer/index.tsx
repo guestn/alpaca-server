@@ -1,20 +1,25 @@
 /** @jsx jsx */
-import { jsx, Global } from '@emotion/core';
+import { jsx, css, Global } from '@emotion/core';
 import React, { useEffect, useState } from 'react';
 import { array, object } from 'prop-types';
-import Toast from '../Toast/index.tsx';
-import styles from './styles';
+import Toast from '../Toast';
 import Icon from '../Icon';
 import LoginPage from '../LoginPage';
 import MainPage from '../MainPage';
 import OrdersPage from '../OrdersPage';
 import AlertsPage from '../AlertsPage';
-
 import Route from '../../router/Route';
 import Link from '../../router/Link';
 import { historyPush } from '../../router';
 
-const MainContainer = (props) => {
+import { app, global, sidebar, logo, login } from './styles';
+
+interface MainContainerProps {
+  notifications: [];
+  user: {};
+}
+
+const MainContainer = (props: MainContainerProps) => {
   const [notification, setNotification] = useState(null);
   useEffect(() => {
     setNotification(props.notifications[0]);
@@ -23,21 +28,19 @@ const MainContainer = (props) => {
   if (!Object.keys(props.user).length) {
     historyPush('/login');
     return (
-      <div css={styles.login}>
-        <Global styles={styles.global} />
+      <div css={login}>
+        <Global styles={global} />
         <Route component={<LoginPage {...props} />} path="/login" exact />
         {notification && <Toast {...notification} />}
       </div>
     );
   }
 
-  //debugger;
-
   return (
-    <div css={styles.app}>
-      <Global styles={styles.global} />
-      <aside css={styles.sidebar}>
-        <img src="/images/alpaca.svg" alt="Alpaca Logo" css={styles.logo} />
+    <div css={app}>
+      <Global styles={global} />
+      <aside css={sidebar}>
+        <img src="/images/alpaca.svg" alt="Alpaca Logo" css={logo} />
         <Link to="/" active={location.pathname === '/'}>
           <Icon name="home-outline" />
         </Link>
@@ -54,11 +57,6 @@ const MainContainer = (props) => {
       {notification && <Toast {...notification} />}
     </div>
   );
-};
-
-MainContainer.propTypes = {
-  notifications: array,
-  user: object,
 };
 
 export default MainContainer;

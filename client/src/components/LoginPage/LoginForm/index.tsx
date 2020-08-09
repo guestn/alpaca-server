@@ -1,35 +1,40 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx, css } from '@emotion/core';
 import React, { useState, useEffect } from 'react';
 import { func, object } from 'prop-types';
 import Button from '../../Button';
 
-import styles from './styles';
+import { form, input } from './styles';
 
+interface LoginArgs {
+  user: string | null;
+  password: string | null;
+}
 
-const LoginForm = ({
-  onRequestLogin,
-  firebase,
-}) => {
+interface LoginFormProps {
+  onRequestLogin: ({ user, password }: LoginArgs) => void;
+}
+
+const LoginForm = ({ onRequestLogin }: LoginFormProps) => {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
 
   useEffect(() => {
     console.log('onRequestLogin');
-    
-    onRequestLogin({ user: null, password: null, firebase });
+
+    onRequestLogin({ user: null, password: null });
   }, []);
-  
+
   const onClickButton = () => {
     if (!user.length) return;
-    onRequestLogin({ user, password, firebase });
+    onRequestLogin({ user, password });
   };
 
   return (
-    <fieldset css={styles.form}>
+    <fieldset css={form}>
       <label htmlFor="login-username">Username</label>
       <input
-        css={styles.input}
+        css={input}
         type="text"
         placeholder="enter username"
         id="login-username"
@@ -38,24 +43,19 @@ const LoginForm = ({
       />
       <label htmlFor="login-password">Password</label>
       <input
-        css={styles.input}
+        css={input}
         type="password"
         placeholder="enter password"
         id="login-password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Button
-        disabled={!user.length}
-        label="Sign In"
-        onClick={onClickButton}
-      />
+      <Button disabled={!user.length} label="Sign In" onClick={onClickButton} />
     </fieldset>
   );
 };
 
 LoginForm.propTypes = {
-  firebase: object,
   onRequestLogin: func,
 };
 

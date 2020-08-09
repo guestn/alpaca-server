@@ -11,7 +11,7 @@ export enum ButtonType {
 
 interface ButtonProps {
   active?: boolean;
-  buttonType: string;
+  buttonType?: string;
   disabled?: boolean;
   icon?: string;
   label: string;
@@ -22,7 +22,7 @@ interface ButtonProps {
 
 const Button = ({ active, buttonType = 'button', disabled, icon, label, onClick, title, type }: ButtonProps) => (
   <button
-    css={buttonStyle(active, disabled, type)}
+    css={buttonStyle((active = false), (disabled = false), (type = 'default'))}
     disabled={disabled}
     //type={buttonType}
     onClick={(e) => {

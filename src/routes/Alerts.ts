@@ -1,6 +1,5 @@
 import { Request, Response, Router, RequestHandler, NextFunction } from 'express';
 import { BAD_REQUEST, OK, UNAUTHORIZED } from 'http-status-codes';
-import axios, { AxiosResponse } from 'axios';
 import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
 
 import { apiRoot, headers } from '../config';
@@ -8,16 +7,6 @@ import { checkAuth } from './App';
 import AWS from 'aws-sdk';
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
 import { sendEmail } from '../notifications/email';
-
-// let serviceConfigOptions: ServiceConfigurationOptions = {
-//   region: 'us-west-2',
-//   //  endpoint: 'http://localhost:8000',
-// };
-
-// AWS.config.update({
-//   region: 'us-west-2',
-//   endpoint: 'http://localhost:9000',
-// });
 
 export const docClient: DocumentClient = new AWS.DynamoDB.DocumentClient({
   region: 'us-west-2',
@@ -29,12 +18,13 @@ export const docClient: DocumentClient = new AWS.DynamoDB.DocumentClient({
 
 const router = Router();
 
+const TABLE_NAME = 'Alpaca-Alerts';
+
 router.get('/alerts', checkAuth(), async (req: Request, res: Response) => {
-  console.log('getAlerts', docClient);
-  console.log({ accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY });
+  console.log('getAlerts');
 
   const params = {
-    TableName: 'Alpaca-Alerts',
+    TableName: TABLE_NAME,
   };
 
   docClient.scan(params, function (e, data) {
@@ -52,7 +42,7 @@ router.post('/alerts', checkAuth(), async (req: Request, res: Response) => {
   const date = new Date();
   const createdAt = date.toISOString();
   const params = {
-    TableName: 'Alpaca-Alerts',
+    TableName: TABLE_NAME,
     Item: {
       ticker: req.body.ticker,
       low: req.body.low,
@@ -62,7 +52,6 @@ router.post('/alerts', checkAuth(), async (req: Request, res: Response) => {
       id: req.body.id,
     },
   };
-  console.log({ params });
 
   console.log('Adding a new item...');
   docClient.put(params, function (err, data) {
@@ -83,10 +72,10 @@ router.delete('/alerts/:id', checkAuth(), async (req: Request, res: Response) =>
   const id = req.params.id;
   console.log(req.params);
   var params = {
-    TableName: 'Alerts',
+    TableName: TABLE_NAME,
     Key: {
       id: req.params.id,
-      ticker: 'AAPL',
+      //ticker: 'AAPL',
     },
   };
 
@@ -100,34 +89,6 @@ router.delete('/alerts/:id', checkAuth(), async (req: Request, res: Response) =>
     }
   });
 });
-
-// router.get('/createAlerts', checkAuth(), async (req: Request, res: Response) => {
-//   var dynamodb = new AWS.DynamoDB();
-
-//   var params = {
-//     TableName: 'Alerts',
-//     KeySchema: [
-//       { AttributeName: 'createdAt', KeyType: 'HASH' }, //Partition key
-//       { AttributeName: 'ticker', KeyType: 'RANGE' }, //Sort key
-//     ],
-//     AttributeDefinitions: [
-//       { AttributeName: 'createdAt', AttributeType: 'N' },
-//       { AttributeName: 'ticker', AttributeType: 'S' },
-//     ],
-//     ProvisionedThroughput: {
-//       ReadCapacityUnits: 10,
-//       WriteCapacityUnits: 10,
-//     },
-//   };
-
-//   dynamodb.createTable(params, function (err, data) {
-//     if (err) {
-//       console.error('Unable to create table. Error JSON:', JSON.stringify(err, null, 2));
-//     } else {
-//       console.log('Created table. Table description JSON:', JSON.stringify(data, null, 2));
-//     }
-//   });
-// });
 
 /******************************************************************************
  *                                 Export Router

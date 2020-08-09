@@ -51,7 +51,7 @@ interface UpdateArgs {
 
 export const updateAlert = ({ alert, highSent, lowSent }: UpdateArgs) => {
   const params = {
-    TableName: 'Alerts',
+    TableName: 'Alpaca-Alerts',
     Item: {
       ...alert,
       highSent: highSent || alert.highSent,
@@ -69,7 +69,7 @@ export const updateAlert = ({ alert, highSent, lowSent }: UpdateArgs) => {
 
 export const getAlert = async (ticker: string) => {
   const params = {
-    TableName: 'Alerts',
+    TableName: 'Alpaca-Alerts',
     // Key: {
     //   ticker,
     //   //"title": title
@@ -80,9 +80,11 @@ export const getAlert = async (ticker: string) => {
 
     console.log('Scan succeeded:', JSON.stringify(data, null, 2));
     const parsedData = data;
+    console.log({ ticker });
 
     const alert = parsedData && parsedData.Items && parsedData.Items.find((item: any) => item.ticker === ticker);
     console.log({ xxx: alert });
+    if (!alert) return console.error('Unable to read item. Error JSON');
     return alert;
   } catch (e) {
     console.error('Unable to read item. Error JSON:', JSON.stringify(e, null, 2));

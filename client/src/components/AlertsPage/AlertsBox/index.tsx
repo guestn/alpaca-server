@@ -41,31 +41,32 @@ const AlertsBox = ({
       {alerts.length > 0 &&
         alerts.map((alertItem: AlertItemProps) => (
           <AlertItem
-            ticker={alertItem.ticker}
-            low={alertItem.low}
-            high={alertItem.high}
-            mid={alertItem.mid}
-            createdAt={alertItem.createdAt}
             assets={assets}
+            createdAt={alertItem.createdAt}
+            high={alertItem.high}
+            highSent={alertItem.highSent}
             historicalData={historicalData}
+            id={alertItem.id}
+            low={alertItem.low}
+            lowSent={alertItem.lowSent}
+            mid={alertItem.mid}
+            onDeleteAlert={onDeleteAlert}
+            onPostAlert={onRequestPostAlert}
             onRequestAssets={onRequestAssets}
             onRequestHistoricalData={onRequestHistoricalData}
-            onPostAlert={onRequestPostAlert}
-            onDeleteAlert={onDeleteAlert}
-            id={alertItem.id}
-            lowSent={alertItem.lowSent}
-            highSent={alertItem.highSent}
+            ticker={alertItem.ticker}
+            key={alertItem.id}
           />
         ))}
       {showNew ? (
         <AlertItem
           assets={assets}
           historicalData={historicalData}
+          isNew
+          onDeleteAlert={() => setShowNew(false)}
+          onPostAlert={onRequestPostAlert}
           onRequestAssets={onRequestAssets}
           onRequestHistoricalData={onRequestHistoricalData}
-          onPostAlert={onRequestPostAlert}
-          onDeleteAlert={() => setShowNew(false)}
-          isNew
         />
       ) : (
         <Button label="Create New" onClick={() => setShowNew(true)} />

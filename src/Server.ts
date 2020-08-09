@@ -101,10 +101,10 @@ app.get('/', (req: Request, res: Response) => {
   }
 });
 
-app.get('/*', (req: Request, res: Response) => {
-  console.log('GET ALERTS');
-  //return res.sendFile('index.html', { root: clientDir })
-});
+// app.get('/*', (req: Request, res: Response) => {
+//   //console.log('GET ALERTS');
+//   //return res.sendFile('index.html', { root: clientDir })
+// });
 
 // app.get('/orders', (req: Request, res: Response) => {
 //   console.log('ORDERS');

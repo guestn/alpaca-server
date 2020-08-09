@@ -5,13 +5,31 @@ import { func, object } from 'prop-types';
 import LiveDataBox from './LiveDataBox';
 import TradeBox from './TradeBox';
 import Orders from '../../containers/Orders';
-import Account from '../../containers/Account/index.tsx';
-import LiveQuotes from '../../containers/LiveQuotes/index.tsx';
+import Account from '../../containers/Account';
+import LiveQuotes from '../../containers/LiveQuotes';
 import Status from '../../containers/Status';
 import Header from '../Header';
-import styles from './styles';
+import { main, mainGrid } from './styles';
 import { scales } from './helpers';
 import CandlestickChart from '../CandlestickChart';
+
+interface MainPageProps {
+  assets: {};
+  clock: object;
+  firebase: object;
+  liveData: object;
+  onCreateOrder: () => void;
+  onRequestAssets: () => void;
+  onRequestClock: () => void;
+  onRequestHistoricalData: () => void;
+  onRequestLogout: () => void;
+  historicalData: object;
+  user: object;
+}
+
+interface OnRequestHistoricalDataArgs {
+  symbols: string;
+}
 
 const MainPage = ({
   assets,
@@ -25,7 +43,7 @@ const MainPage = ({
   onRequestLogout,
   historicalData,
   user,
-}) => {
+}: MainPageProps) => {
   const [ticker, setTicker] = useState('AAPL');
   const [duration, setDuration] = useState(Object.keys(scales)[0]);
 
@@ -34,26 +52,20 @@ const MainPage = ({
     return () => {};
   }, [ticker]);
 
-  const onRequestTicker = (theTicker) => {
+  const onRequestTicker = (theTicker: string) => {
     setTicker(theTicker);
     onRequestHistoricalData({ ...scales[duration], symbols: theTicker });
   };
 
-  const onRequestDuration = (theDuration) => {
+  const onRequestDuration = (theDuration: string) => {
     setDuration(theDuration);
     onRequestHistoricalData({ ...scales[theDuration], symbols: ticker });
   };
 
   return (
-    <main css={styles.main}>
-      <Header
-        user={user}
-        clock={clock}
-        firebase={firebase}
-        onRequestClock={onRequestClock}
-        onRequestLogout={onRequestLogout}
-      />
-      <div css={styles.mainGrid}>
+    <main css={main}>
+      <Header user={user} clock={clock} onRequestClock={onRequestClock} onRequestLogout={onRequestLogout} />
+      <div css={mainGrid}>
         <LiveDataBox liveData={liveData && liveData[ticker]} ticker={ticker} />
         <Orders type="compact" notCanceled />
         <TradeBox onCreateOrder={onCreateOrder} ticker={ticker} />
@@ -72,18 +84,6 @@ const MainPage = ({
       <Status />
     </main>
   );
-};
-
-MainPage.propTypes = {
-  clock: object,
-  firebase: object,
-  liveData: object,
-  onCreateOrder: func,
-  onRequestClock: func,
-  onRequestHistoricalData: func,
-  onRequestLogout: func,
-  historicalData: object,
-  user: object,
 };
 
 export default MainPage;
