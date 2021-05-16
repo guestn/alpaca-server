@@ -13,7 +13,7 @@ interface SaveAlertErroredAction {
 
 interface SaveAlertSucceededAction {
   type: typeof POST_ALERT_SUCCEEDED;
-  data: {};
+  alert: {};
 }
 
 export const postAlertErrored = (error: Error): SaveAlertErroredAction => ({
@@ -21,9 +21,9 @@ export const postAlertErrored = (error: Error): SaveAlertErroredAction => ({
   error,
 });
 
-export const postAlertSucceeded = (data: []): SaveAlertSucceededAction => ({
+export const postAlertSucceeded = (alert: []): SaveAlertSucceededAction => ({
   type: POST_ALERT_SUCCEEDED,
-  data,
+  alert,
 });
 
 export const postAlert = (data) => (dispatch: Dispatch<any>) => {

@@ -19,6 +19,10 @@ router.post('/login', async (req: Request, res: Response) => {
 
   let jwt = req.signedCookies[cookieProps.key];
 
+  console.log({ cookieProps });
+
+  
+
   if (jwt) {
     const clientData = await jwtService.decodeJwt(jwt);
     const user = await userDao.getOneById(clientData.id);
@@ -52,13 +56,19 @@ router.post('/login', async (req: Request, res: Response) => {
       error: loginFailedErr,
     });
   }
+  console.log({ pwdPassed });
+  
   // Setup Admin Cookie
   jwt = await jwtService.getJwt({
     id: user.id,
     role: user.role,
   });
+  console.log({ jwt });
+  
 
   const { key, options } = cookieProps;
+  console.log({ cookieProps });
+  
   res.cookie(key, jwt, options);
   console.log('COOKIE', key, jwt, options);
   return res.json({ user: { email } });

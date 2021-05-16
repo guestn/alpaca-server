@@ -12,7 +12,7 @@ interface GetHistoricalDataErroredAction {
 
 interface GetHistoricalDataSucceededAction {
   type: typeof GET_HISTORICAL_DATA_SUCCEEDED;
-  data: {};
+  historicalData: {};
 }
 
 interface Params {
@@ -26,9 +26,9 @@ export const getHistoricalDataErrored = (error: Error): GetHistoricalDataErrored
   error,
 });
 
-export const getHistoricalDataSucceeded = (data: {}): GetHistoricalDataSucceededAction => ({
+export const getHistoricalDataSucceeded = (historicalData: {}): GetHistoricalDataSucceededAction => ({
   type: GET_HISTORICAL_DATA_SUCCEEDED,
-  data,
+  historicalData,
 });
 
 export const getHistoricalData = ({ timeframe = '1D', limit = 5, symbols }: Params) => (dispatch: Dispatch<any>) => {

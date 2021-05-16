@@ -27,12 +27,12 @@ app.use(cors());
 
 // Show routes called in console during development
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+    app.use(morgan('dev'));
 }
 
 // Security
 if (process.env.NODE_ENV === 'production') {
-  app.use(helmet());
+    app.use(helmet());
 }
 
 // Add APIs
@@ -40,24 +40,24 @@ app.use('/api', BaseRouter);
 
 // Print API errors
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  logger.error(err.message, err);
-  return res.status(BAD_REQUEST).json({
-    error: err.message,
-  });
+    logger.error(err.message, err);
+    return res.status(BAD_REQUEST).json({
+        error: err.message,
+    });
 });
 
 app.use((req, res, next) => {
-  console.log('aha');
-  next();
+    console.log('aha');
+    next();
 });
 
 if (process.env.NODE_ENV === 'development') {
-  const proxyMiddleware = createProxyMiddleware({
-    target: 'http://localhost:3000',
-    changeOrigin: true,
-  });
+    const proxyMiddleware = createProxyMiddleware({
+        target: 'http://localhost:3500',
+        changeOrigin: true,
+    });
 
-  app.use('/', proxyMiddleware);
+    app.use('/', proxyMiddleware);
 }
 
 /************************************************************************************
@@ -68,15 +68,15 @@ const viewsDir = path.join(__dirname, 'views');
 app.set('views', viewsDir);
 //const clientDir = path.join(__dirname, './client/public');
 const clientDir =
-  process.env.NODE_ENV === 'development'
-    ? path.join(__dirname, '../client/public')
-    : path.join(__dirname, './client/public');
+    process.env.NODE_ENV === 'development'
+        ? path.join(__dirname, '../client/public')
+        : path.join(__dirname, './client/public');
 
 app.set('views', viewsDir);
 const staticDir =
-  process.env.NODE_ENV === 'development'
-    ? path.join(__dirname, '../client/public')
-    : path.join(__dirname, './client/public');
+    process.env.NODE_ENV === 'development'
+        ? path.join(__dirname, '../client/public')
+        : path.join(__dirname, './client/public');
 app.use(express.static(staticDir));
 
 // app.get('/login', (req: Request, res: Response) => {
@@ -91,14 +91,14 @@ app.use(express.static(staticDir));
 // });
 
 app.get('/', (req: Request, res: Response) => {
-  console.log('login if not logged in', req.originalUrl);
-  const jwt = req.signedCookies[cookieProps.key];
-  if (!jwt) {
-    return res.sendFile('login.html', { root: viewsDir });
-  } else {
-    console.log('resredirect');
-    return res.sendFile('index.html', { root: clientDir });
-  }
+    console.log('login if not logged in', req.originalUrl);
+    const jwt = req.signedCookies[cookieProps.key];
+    if (!jwt) {
+        return res.sendFile('login.html', { root: viewsDir });
+    } else {
+        console.log('resredirect');
+        return res.sendFile('index.html', { root: clientDir });
+    }
 });
 
 // app.get('/*', (req: Request, res: Response) => {

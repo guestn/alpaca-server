@@ -19,7 +19,9 @@ interface CreateNotificationAction {
 
 export const createNotification = ({ message, noteType }: Params) => ({
   type: CREATE_NOTIFICATION,
-  message,
-  noteType,
-  createdAt: new Date(),
+  notification: {
+    message,
+    noteType,
+    createdAt: new Date(),
+  }
 });

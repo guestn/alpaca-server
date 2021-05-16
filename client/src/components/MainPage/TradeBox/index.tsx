@@ -30,7 +30,7 @@ const TradeBox = ({
   return (
     <section css={styles.container}>
       <header css={styles.header}>
-        <h3 css={styles.h3}>Trade</h3>
+        <h3 css={styles.h3}>Trade {ticker}</h3>
         <Icon
           name={isLocked ? 'lock-open-outline' : 'lock-closed-outline'}
           onClick={() => setIsLocked((val) => !val)}
@@ -62,9 +62,9 @@ const TradeBox = ({
   );
 };
 
-TradeBox.propTypes = {
+interface TradeBox {
   ticker: string,
-  onCreateOrder: func,
+  onCreateOrder: () => void,
 };
 
 export default TradeBox;

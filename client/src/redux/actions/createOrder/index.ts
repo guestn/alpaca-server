@@ -12,7 +12,7 @@ interface CreateOrderErroredAction {
 
 interface CreateOrderSucceededAction {
   type: typeof CREATE_ORDER_SUCCEEDED,
-  data: object,
+  newOrders: object,
 }
 
 enum Side {
@@ -32,9 +32,9 @@ export const createOrderErrored = (error: Error):CreateOrderErroredAction => ({
   error,
 });
 
-export const createOrderSucceeded = (data: object):CreateOrderSucceededAction => ({
+export const createOrderSucceeded = (newOrders: object):CreateOrderSucceededAction => ({
   type: 'CREATE_ORDER_SUCCEEDED',
-  data,
+  newOrders,
 });
 
 export const createOrder = ({ symbol, qty, side, type, time_in_force }: Params) => (dispatch: Dispatch<any>) => {

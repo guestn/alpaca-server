@@ -11,7 +11,7 @@ interface GetAccountDataErroredAction {
 }
 interface GetAccountDataSucceededAction {
   type: typeof GET_ACCOUNT_DATA_SUCCEEDED,
-  data: {},
+  accountData: {},
 }
 
 export const getAccountDataErrored = (error: Error): GetAccountDataErroredAction => ({
@@ -19,9 +19,9 @@ export const getAccountDataErrored = (error: Error): GetAccountDataErroredAction
   error,
 });
 
-export const getAccountDataSucceeded = (data: {}): GetAccountDataSucceededAction => ({
+export const getAccountDataSucceeded = (accountData: {}): GetAccountDataSucceededAction => ({
   type: GET_ACCOUNT_DATA_SUCCEEDED,
-  data,
+  accountData,
 });
 
 export const getAccountData = () => (dispatch: Dispatch<any>) => {

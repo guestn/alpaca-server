@@ -1,6 +1,10 @@
+interface Spacing {
+  [key:string]: number | { [key:string]: string }
+}
+
 const unit = 8;
 
-const spacing = {
+const spacing: Spacing = {
   br: unit * 0.5,
   fullWidth: { width: '100%' },
   gridGap: unit * 3,

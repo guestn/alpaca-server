@@ -6,11 +6,17 @@ import { object, string } from 'prop-types';
 import Icon from '../../Icon';
 
 import styles from './styles';
+import { LiveData } from '../../../redux/reducers/types';
+
+interface LiveDataBoxProps {
+  liveData: LiveData;
+  ticker: string;
+}
 
 const LiveDataBox = ({
   liveData = {},
   ticker,
-}) => {
+}: LiveDataBoxProps) => {
   const [p, setP] = useState(0);
   const [change, setChange] = useState('up');
 

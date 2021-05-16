@@ -11,7 +11,7 @@ interface GetAssetsErroredAction {
 
 interface GetAssetsSucceededAction {
   type: typeof GET_ASSETS_SUCCEEDED,
-  data: {},
+  assets: {},
 }
 
 export const getAssetsErrored = (error: Error): GetAssetsErroredAction => ({
@@ -19,9 +19,9 @@ export const getAssetsErrored = (error: Error): GetAssetsErroredAction => ({
   error,
 });
 
-export const getAssetsSucceeded = (data: []):GetAssetsSucceededAction => ({
+export const getAssetsSucceeded = (assets: []):GetAssetsSucceededAction => ({
   type: 'GET_ASSETS_SUCCEEDED',
-  data,
+  assets,
 });
 
 export const getAssets = () => (dispatch: Dispatch<any>) => {

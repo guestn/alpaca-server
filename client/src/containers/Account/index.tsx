@@ -10,6 +10,10 @@ interface DispatchProps {
   getAccountData: () => {}
 }
 
+interface StateProps {
+  accountData: AccountData
+}
+
 export interface AccountData {
   buying_power: string,
   cash: string,
@@ -30,7 +34,7 @@ const Account = ({
   />
 );
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: StateProps) => ({
   accountData: state.accountData || null,
 });
 
@@ -38,4 +42,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchProps => ({
   getAccountData: () => dispatch(actions.getAccountData()),
 });
 
-export default connect<RootState, DispatchProps>(mapStateToProps, mapDispatchToProps)(Account);
+export default connect(mapStateToProps, mapDispatchToProps)(Account);

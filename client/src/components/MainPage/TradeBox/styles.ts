@@ -1,5 +1,5 @@
 /** @jsx jsx */
-
+import { FlexDirectionProperty } from 'csstype';
 import colors from '../../../styles/colors';
 import spacing from '../../../styles/spacing';
 import typography from '../../../styles/typography';
@@ -10,7 +10,7 @@ const styles = {
     alignItems: 'center',
     border: `1px solid ${colors.text}`,
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column' as FlexDirectionProperty,
     gridColumn: '1 / span 1',
     gridRow: '3  / span 1',
   },
@@ -33,7 +33,7 @@ const styles = {
   form: {
     border: 'none',
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column' as FlexDirectionProperty,
     padding: spacing.unit,
     width: '100%',
   },

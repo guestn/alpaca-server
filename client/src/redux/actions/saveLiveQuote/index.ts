@@ -4,17 +4,17 @@ export const SAVE_LIVE_QUOTE_SUCCEEDED = 'SAVE_LIVE_QUOTE_SUCCEEDED';
 
 interface SaveLiveQuoteSucceededAction {
   type: typeof SAVE_LIVE_QUOTE_SUCCEEDED,
-  data: {},
+  liveQuotes: {},
   ticker: string,
 }
 
-export const saveLiveQuoteSucceeded = ({ ticker, data }):SaveLiveQuoteSucceededAction => ({
+export const saveLiveQuoteSucceeded = ({ ticker, liveQuotes }):SaveLiveQuoteSucceededAction => ({
   type: SAVE_LIVE_QUOTE_SUCCEEDED,
-  data,
+  liveQuotes,
   ticker,
 });
 
 
-export const saveLiveQuote = ({ ticker, data }) => (dispatch: Dispatch<any>) => {
-  return dispatch(saveLiveQuoteSucceeded({ ticker, data }));
+export const saveLiveQuote = ({ ticker, liveQuotes }) => (dispatch: Dispatch<any>) => {
+  return dispatch(saveLiveQuoteSucceeded({ ticker, liveQuotes }));
 };

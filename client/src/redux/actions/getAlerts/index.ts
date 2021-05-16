@@ -11,7 +11,7 @@ interface GetAlertsErroredAction {
 
 interface GetAlertsSucceededAction {
   type: typeof GET_ALERTS_SUCCEEDED;
-  data: {};
+  alerts: {};
 }
 
 export const getAlertsErrored = (error: Error): GetAlertsErroredAction => ({
@@ -19,9 +19,9 @@ export const getAlertsErrored = (error: Error): GetAlertsErroredAction => ({
   error,
 });
 
-export const getAlertsSucceeded = (data: []): GetAlertsSucceededAction => ({
+export const getAlertsSucceeded = (alerts: []): GetAlertsSucceededAction => ({
   type: GET_ALERTS_SUCCEEDED,
-  data,
+  alerts,
 });
 
 export const getAlerts = () => (dispatch: Dispatch<any>) => {

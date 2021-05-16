@@ -1,6 +1,5 @@
 /** @jsx jsx */
-import { css, SerializedStyles } from '@emotion/core';
-import { FlexDirectionProperty } from 'csstype';
+
 import colors from '../../../styles/colors';
 import spacing from '../../../styles/spacing';
 import typography from '../../../styles/typography';
@@ -11,9 +10,9 @@ const styles = {
         alignItems: 'center',
         border: `1px solid ${colors.text}`,
         display: 'flex',
-        flexDirection: 'column' as FlexDirectionProperty,
+        flexDirection: 'column',
         gridColumn: '1 / span 1',
-        gridRow: '4 / span 4',
+        gridRow: '1 / span 2',
     },
     header: {
         alignItems: 'center',
@@ -23,24 +22,12 @@ const styles = {
         justifyContent: 'center',
         width: '100%',
     },
-    content: {
-        display: 'flex',
-        flexDirection: 'column' as FlexDirectionProperty,
-        flex: 1,
-        padding: spacing.unit,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     balance: {
         alignItems: 'center',
-        justifyContent: 'center',
         display: 'flex',
         flex: 1,
-        fontSize: '1.2rem',
-    },
-    smallHeader: {
-        fontSize: '0.8rem',
-        lineHeight: 1,
+        fontSize: '1.4rem',
+        justifyContent: 'center',
     },
 };
 

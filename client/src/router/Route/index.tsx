@@ -5,13 +5,12 @@ import {
   unregister,
   matchPath,
 } from '..';
-import { cachedDataVersionTag } from 'v8';
 
 interface RouteProps {
   path: string,
   exact: boolean,
   component: ReactElement,
-  render: () => void,
+  render?: () => void,
 }
 
 export interface IRoute {

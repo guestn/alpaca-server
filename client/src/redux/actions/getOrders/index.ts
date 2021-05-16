@@ -12,7 +12,7 @@ interface GetOrdersErroredAction {
 
 interface GetOrdersSuccededAction {
   type: typeof GET_ORDERS_SUCCEEDED,
-  data: [],
+  orders: [],
 }
 
 export const getOrdersErrored = (error: Error):GetOrdersErroredAction => ({
@@ -20,9 +20,9 @@ export const getOrdersErrored = (error: Error):GetOrdersErroredAction => ({
   error,
 });
 
-export const getOrdersSucceeded = (data:[]):GetOrdersSuccededAction => ({
+export const getOrdersSucceeded = (orders:[]):GetOrdersSuccededAction => ({
   type: GET_ORDERS_SUCCEEDED,
-  data,
+  orders,
 });
 
 export const getOrders = () => (dispatch: Dispatch<any>) => {

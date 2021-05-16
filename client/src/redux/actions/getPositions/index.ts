@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { createNotification } from '../createNotification/index.ts';
+import { createNotification } from '../createNotification';
 
 export const GET_POSITIONS_SUCCEEDED = 'GET_POSITIONS_SUCCEEDED';
 export const GET_POSITIONS_ERRORED = 'GET_POSITIONS_ERRORED';
@@ -12,7 +12,7 @@ interface GetPositionsErroredAction {
 
 interface GetPositionsSucceededAction {
   type: typeof GET_POSITIONS_SUCCEEDED,
-  data: [],
+  positions: [],
 }
 
 export const getPositionsErrored = (error: Error): GetPositionsErroredAction => ({
@@ -20,9 +20,9 @@ export const getPositionsErrored = (error: Error): GetPositionsErroredAction => 
   error,
 });
 
-export const getPositionsSucceeded = (data: []): GetPositionsSucceededAction => ({
+export const getPositionsSucceeded = (positions: []): GetPositionsSucceededAction => ({
   type: 'GET_POSITIONS_SUCCEEDED',
-  data,
+  positions,
 });
 
 export const getPositions = () => (dispatch: Dispatch<any>) => {

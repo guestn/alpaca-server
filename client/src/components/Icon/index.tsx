@@ -11,7 +11,7 @@ interface IconProps {
   size: number;
 }
 
-const Icon = ({ hoverable, name, onClick, size = 24 }: IconProps): React.ReactNode => (
+const Icon = ({ hoverable, name, onClick, size = 24 }: IconProps): any => (
   <ion-icon name={name} css={icon(size)} onClick={onClick} />
 );
 

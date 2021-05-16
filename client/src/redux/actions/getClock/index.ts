@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
 import { createNotification, NoteType }  from '../createNotification/index';
-import { headers } from '../../../config'
 import { Dispatch } from 'redux';
 
 export const GET_CLOCK_ERRORED = 'GET_CLOCK_ERRORED';
@@ -13,7 +12,7 @@ interface GetClockErroredAction {
 
 interface GetClockSucceededAction {
   type: typeof GET_CLOCK_SUCCEEDED,
-  data: {}
+  clock: {}
 }
 
 export const getClockErrored = (error: Error):GetClockErroredAction => ({
@@ -21,9 +20,9 @@ export const getClockErrored = (error: Error):GetClockErroredAction => ({
   error,
 });
 
-export const getClockSucceeded = (data: object):GetClockSucceededAction => ({
+export const getClockSucceeded = (clock: object):GetClockSucceededAction => ({
   type: GET_CLOCK_SUCCEEDED,
-  data,
+  clock,
 });
 
 export const getClock = () => (dispatch: Dispatch<any>) => {

@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import React, { useEffect, useState } from 'react';
-import { func, object } from 'prop-types';
 import LiveDataBox from './LiveDataBox';
 import TradeBox from './TradeBox';
 import Orders from '../../containers/Orders';
@@ -12,18 +11,19 @@ import Header from '../Header';
 import { main, mainGrid } from './styles';
 import { scales } from './helpers';
 import CandlestickChart from '../CandlestickChart';
+import { Asset } from '../../redux/reducers/types';
 
 interface MainPageProps {
-  assets: {};
+  assets: Asset[];
   clock: object;
   firebase: object;
   liveData: object;
   onCreateOrder: () => void;
   onRequestAssets: () => void;
   onRequestClock: () => void;
-  onRequestHistoricalData: () => void;
+  onRequestHistoricalData: ({}) => void;
   onRequestLogout: () => void;
-  historicalData: object;
+  historicalData: { [key :string]: {} };
   user: object;
 }
 
@@ -34,7 +34,6 @@ interface OnRequestHistoricalDataArgs {
 const MainPage = ({
   assets,
   clock,
-  firebase,
   liveData,
   onCreateOrder,
   onRequestAssets,
