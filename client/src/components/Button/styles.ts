@@ -2,28 +2,27 @@
 import colors from '../../styles/colors';
 import spacing from '../../styles/spacing';
 import { css } from '@emotion/core';
-import { ButtonType } from './';
 
-const hover = (type) => ({
-  backgroundColor: type === 'invisible' ? colors.mg : colors.hilite,
+const hover = (displayType: string) => ({
+  backgroundColor: displayType === 'invisible' ? colors.mg : colors.hilite,
   cursor: 'pointer',
 });
 
-const getBackgroundColor = (active: boolean, type) => {
-  if (type === 'invisible' || type === 'outline') {
+const getBackgroundColor = (active: boolean, displayType: string) => {
+  if (displayType === 'invisible' || displayType === 'outline') {
     if (active) return colors.mg;
     return 'transparent';
   }
   return colors.hilite;
 };
 
-export const buttonStyle = (active: boolean, disabled: boolean, type: ButtonType) =>
+export const buttonStyle = (active: boolean, disabled: boolean, displayType: string) =>
   css({
     alignItems: 'center',
-    backgroundColor: getBackgroundColor(active, type),
-    border: type === 'outline' ? `1px solid ${colors.text}` : 'none',
+    backgroundColor: getBackgroundColor(active, displayType),
+    border: displayType === 'outline' ? `1px solid ${colors.text}` : 'none',
     borderRadius: 3,
-    color: type === 'outline' || type === 'invisible' ? colors.text : colors.white,
+    color: displayType === 'outline' || displayType === 'invisible' ? colors.text : colors.white,
     display: 'flex',
     fontSize: '0.8rem',
     justifyContent: 'center',
@@ -34,5 +33,5 @@ export const buttonStyle = (active: boolean, disabled: boolean, type: ButtonType
     '> i': {
       fontSize: 20,
     },
-    ':hover': hover(type),
+    ':hover': hover(displayType),
   });

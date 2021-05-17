@@ -5,8 +5,8 @@ import { NoteType } from '../../redux/actions/createNotification';
 import { container } from './styles';
 
 interface ToastProps {
-    message: string;
-    noteType: NoteType;
+    message?: string;
+    noteType?: NoteType;
 }
 
 const Toast = ({ message = 'There was an error', noteType }: ToastProps) => {

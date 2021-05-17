@@ -23,6 +23,8 @@ type AllActions = Action & RootState;
 
 // TODO: Split reducer into many
 const reducer = (state = initialState, action: AllActions): RootState => {
+    console.log({action});
+    
     switch (action.type) {
         case at.REQUEST_LOGIN_SUCCEEDED:
             return {

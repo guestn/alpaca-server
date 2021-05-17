@@ -1,8 +1,7 @@
-
 export interface AccountData {
-  buying_power: string,
-  cash: string,
-  portfolio_value: string,
+    buying_power: string;
+    cash: string;
+    portfolio_value: string;
 }
 export interface Asset {
     symbol: string;
@@ -19,9 +18,8 @@ export interface ConnectionStatus {
 
 export interface HistoricalData {}
 export interface LiveData {
-    [key: string]: {
-        p: string;
-    };
+    p: number;
+    t: number;
 }
 
 export interface Notification {
@@ -29,25 +27,38 @@ export interface Notification {
     noteType: any;
     createdAt: string;
 }
+
+export interface Order {
+    id: string;
+    created_at: string;
+    symbol: string;
+    status: string;
+    qty: string;
+    filled_at: string;
+    order_type: string;
+    side: string;
+    filled_qty: string;
+    filled_avg_price: string;
+}
 export interface User {
     displayName?: string;
 }
 
 export interface RootState {
+    accountData?: AccountData;
     alerts?: Alert[];
     assets?: Asset[];
-    accountData?: AccountData;
     clock?: Clock;
-    notifications?: Notification[];
-    historicalData?: HistoricalData;
     connectionStatus?: ConnectionStatus;
-    newOrders?: [];
-    user?: User;
-    status: {};
+    historicalData?: HistoricalData;
     liveData?: LiveData;
     liveQuotes?: {};
-    tradeUpdates?: [];
-    orders?: { id: string }[];
-    ticker?: string;
+    newOrders?: [];
+    notifications?: Notification[];
+    orders?: Order[];
     positions: [];
+    status: {};
+    ticker?: string;
+    tradeUpdates?: [];
+    user?: User;
 }

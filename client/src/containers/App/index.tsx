@@ -1,8 +1,7 @@
 import React from 'react';
-import { array, func, object } from 'prop-types';
 import { connect } from 'react-redux';
 import MainContainer from '../../components/MainContainer';
-import actions from '../../redux/actions/index.ts';
+import actions from '../../redux/actions';
 import { Asset, Clock, HistoricalData, LiveData, User } from '../../redux/reducers/types';
 
 interface AppProps {
@@ -16,6 +15,7 @@ interface AppProps {
     historicalData: HistoricalData;
     liveData: LiveData;
     notifications: Notification[];
+    requestLogin: (params: {}) => void;
     requestLogout: () => void;
     user: User;
 }
@@ -31,6 +31,7 @@ const App = ({
     historicalData,
     liveData,
     notifications,
+    requestLogin,
     requestLogout,
     user,
 }: AppProps) => (
@@ -45,6 +46,7 @@ const App = ({
         onRequestAssets={getAssets}
         onRequestClock={getClock}
         onRequestHistoricalData={getHistoricalData}
+        onRequestLogin={requestLogin}
         onRequestLogout={requestLogout}
         user={user}
     />
@@ -64,21 +66,8 @@ const mapDispatchToProps = (dispatch) => ({
     getAssets: () => dispatch(actions.getAssets()),
     getHistoricalData: (params) => dispatch(actions.getHistoricalData(params)),
     createOrder: (params) => dispatch(actions.createOrder(params)),
+    requestLogin: (params) => dispatch(actions.requestLogin(params)),
     requestLogout: (params) => dispatch(actions.requestLogout(params)),
 });
-
-App.propTypes = {
-    clock: object,
-    createOrder: func,
-    error: object,
-    firebase: object,
-    getClock: func,
-    getHistoricalData: func,
-    liveData: object,
-    notifications: array,
-    historicalData: object,
-    user: object,
-    requestLogout: func,
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

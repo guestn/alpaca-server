@@ -1,10 +1,10 @@
 /** @jsx jsx */
-
+import { BorderCollapseProperty } from 'csstype';
 import colors from './colors';
 import spacing from './spacing';
 
 const tables = {
-    borderCollapse: 'collapse',
+    borderCollapse: 'collapse' as BorderCollapseProperty,
     borderBottom: `1px solid ${colors.text}`,
     td: {
         color: colors.text,

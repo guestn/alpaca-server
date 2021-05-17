@@ -5,10 +5,10 @@ import React from 'react';
 import { icon } from './styles';
 
 interface IconProps {
-  hoverable: boolean;
+  hoverable?: boolean;
   name: string;
-  onClick: () => void;
-  size: number;
+  onClick?: () => void;
+  size?: number;
 }
 
 const Icon = ({ hoverable, name, onClick, size = 24 }: IconProps): any => (

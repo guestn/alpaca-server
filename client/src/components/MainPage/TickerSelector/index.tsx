@@ -24,7 +24,7 @@ const TickerSelector = ({ assets, onRequestAssets, onRequestTicker, ticker }: Ti
             <Select
                 styles={styles.select}
                 value={{ label: ticker, value: 0 }}
-                options={assets.map((a, idx) => ({ label: a.symbol, value: idx }))}
+                options={assets && assets.map((a, idx) => ({ label: a.symbol, value: idx }))}
                 onChange={(option: { label: string }) => onRequestTicker(option.label)}
             />
         </form>

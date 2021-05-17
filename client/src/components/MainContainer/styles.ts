@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { BoxSizingProperty } from 'csstype';
+import { BoxSizingProperty, FlexDirectionProperty } from 'csstype';
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 import spacing from '../../styles/spacing';
@@ -36,7 +36,7 @@ export const sidebar = {
     borderRight: `1px solid ${colors.text}`,
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'column',
+    flexDirection: 'column' as FlexDirectionProperty,
     padding: `${spacing.unit * 2} 0`,
     width: spacing.unit * 10,
     a: {

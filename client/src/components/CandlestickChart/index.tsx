@@ -53,7 +53,7 @@ const CandlestickChart = ({
                         <Button
                             active={scale === duration}
                             label={scale}
-                            type="invisible"
+                            displayType="invisible"
                             key={scale}
                             onClick={() => onRequestDuration(scale)}
                         />

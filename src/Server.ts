@@ -56,7 +56,6 @@ if (process.env.NODE_ENV === 'development') {
         target: 'http://localhost:3500',
         changeOrigin: true,
     });
-
     app.use('/', proxyMiddleware);
 }
 
@@ -64,7 +63,7 @@ if (process.env.NODE_ENV === 'development') {
  *                              Serve front-end content
  ***********************************************************************************/
 
-const viewsDir = path.join(__dirname, 'views');
+export const viewsDir = path.join(__dirname, 'views');
 app.set('views', viewsDir);
 //const clientDir = path.join(__dirname, './client/public');
 const clientDir =
@@ -78,17 +77,6 @@ const staticDir =
         ? path.join(__dirname, '../client/public')
         : path.join(__dirname, './client/public');
 app.use(express.static(staticDir));
-
-// app.get('/login', (req: Request, res: Response) => {
-//   const jwt = req.signedCookies[cookieProps.key];
-
-//   if (jwt) {
-//     console.log('is LOGGED IN')
-//     return res.redirect('/');
-//     //return res.redirect('http://localhost:3000/index.html');
-//   }
-//   return res.redirect('/');
-// });
 
 app.get('/', (req: Request, res: Response) => {
     console.log('login if not logged in', req.originalUrl);

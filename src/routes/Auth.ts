@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Request, Response, Router } from 'express';
 import { BAD_REQUEST, OK, UNAUTHORIZED } from 'http-status-codes';
-
 import UserDao from '@daos/User/UserDao.mock';
 import { JwtService } from '@shared/JwtService';
 import { paramMissingError, loginFailedErr, cookieProps } from '@shared/constants';
@@ -15,64 +14,58 @@ const jwtService = new JwtService();
  ******************************************************************************/
 
 router.post('/login', async (req: Request, res: Response) => {
-  console.log('/login');
+    console.log('/login', req.signedCookies[cookieProps.key], cookieProps.key);
 
-  let jwt = req.signedCookies[cookieProps.key];
+    let jwt = req.signedCookies[cookieProps.key];
+   
+    if (jwt) {
+        const clientData = await jwtService.decodeJwt(jwt);
+        const user = await userDao.getOneById(clientData.id);
+        const parsedUser = {
+            name: user?.name,
+            email: user?.email,
+            role: user?.role,
+        };
+        return res.json({ user: parsedUser });
+    }
 
-  console.log({ cookieProps });
+    // Check email and password present
+    const { email, password } = req.body;
+    if (!(email || !password)) {
+        return res.status(BAD_REQUEST).json({
+            error: paramMissingError,
+        });
+    }
 
-  
+    // Fetch user
+    const user = await userDao.getOne(email);
+    if (!user) {
+        return res.status(UNAUTHORIZED).json({
+            error: loginFailedErr,
+        });
+    }
 
-  if (jwt) {
-    const clientData = await jwtService.decodeJwt(jwt);
-    const user = await userDao.getOneById(clientData.id);
-    const parsedUser = {
-      name: user?.name,
-      email: user?.email,
-      role: user?.role,
-    };
-    return res.json({ user: parsedUser });
-  }
+    // Check password
+    const pwdPassed = await bcrypt.compare(password, user.pwdHash);
+    if (!pwdPassed) {
+        return res.status(UNAUTHORIZED).json({
+            error: loginFailedErr,
+        });
+    }
+    console.log({ pwdPassed });
 
-  // Check email and password present
-  const { email, password } = req.body;
-  if (!(email && password)) {
-    return res.status(BAD_REQUEST).json({
-      error: paramMissingError,
+    // Setup Admin Cookie
+    jwt = await jwtService.getJwt({
+        id: user.id,
+        role: user.role,
     });
-  }
-  // Fetch user
-  const user = await userDao.getOne(email);
-  console.log({ user });
-  if (!user) {
-    return res.status(UNAUTHORIZED).json({
-      error: loginFailedErr,
-    });
-  }
-  // Check password
-  const pwdPassed = await bcrypt.compare(password, user.pwdHash);
-  if (!pwdPassed) {
-    return res.status(UNAUTHORIZED).json({
-      error: loginFailedErr,
-    });
-  }
-  console.log({ pwdPassed });
-  
-  // Setup Admin Cookie
-  jwt = await jwtService.getJwt({
-    id: user.id,
-    role: user.role,
-  });
-  console.log({ jwt });
-  
 
-  const { key, options } = cookieProps;
-  console.log({ cookieProps });
-  
-  res.cookie(key, jwt, options);
-  console.log('COOKIE', key, jwt, options);
-  return res.json({ user: { email } });
-  // return res.status(OK).end();
+    const { key, options } = cookieProps;
+
+    res.cookie(key, jwt, options);
+
+    // Return logged in user JSON
+    return res.json({ name: user.name, email: user.email, role: email.role, id: user.id });
 });
 
 /******************************************************************************
@@ -80,10 +73,10 @@ router.post('/login', async (req: Request, res: Response) => {
  ******************************************************************************/
 
 router.get('/logout', async (req: Request, res: Response) => {
-  console.log('logout');
-  const { key, options } = cookieProps;
-  res.clearCookie(key, options);
-  return res.status(OK).end();
+    console.log('logout');
+    const { key, options } = cookieProps;
+    res.clearCookie(key, options);
+    return res.status(OK).end();
 });
 
 /******************************************************************************

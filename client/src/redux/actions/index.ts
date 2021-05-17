@@ -8,7 +8,7 @@ import { getClock } from './getClock/index.ts';
 import { getHistoricalData } from './getHistoricalData/index.ts';
 import { getOrders } from './getOrders/index.ts';
 import { getPositions } from './getPositions/index.ts';
-import { requestLogin } from './requestLogin/index.ts';
+import { requestLogin } from './requestLogin';
 import { requestLogout } from './requestLogout/index.ts';
 import { saveLiveData, saveLiveDataSucceeded } from './saveLiveData/index.ts';
 import { saveLiveQuote } from './saveLiveQuote/index.ts';

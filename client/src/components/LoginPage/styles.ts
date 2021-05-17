@@ -1,4 +1,5 @@
 /** @jsx jsx */
+import { BorderRadiusProperty, FlexDirectionProperty } from 'csstype';
 import { css } from '@emotion/core';
 import spacing from '../../styles/spacing';
 import colors from '../../styles/colors';
@@ -7,9 +8,9 @@ import typography from '../../styles/typography';
 export const main = {
   ...typography,
   alignItems: 'center',
-  borderRadius: spacing.br,
+  borderRadius: spacing.br as BorderRadiusProperty,
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'column' as FlexDirectionProperty,
   justifyContent: 'center',
 };
 

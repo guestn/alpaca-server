@@ -15,7 +15,7 @@ export const historyReplace = (path: string) => {
   instances.forEach((instance) => instance.forceUpdate());
 };
 
-interface MatchPath {
+export interface MatchPath {
   path: string | null,
   url: string,
   isExact: boolean,
