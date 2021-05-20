@@ -40,6 +40,25 @@ export interface Order {
     filled_qty: string;
     filled_avg_price: string;
 }
+
+export interface Position {
+    asset_class: string;
+    asset_id: string;
+    avg_entry_price: string;
+    change_today: string;
+    cost_basis: string;
+    current_price: string;
+    exchange: string;
+    lastday_price: string;
+    market_value: string;
+    qty: string;
+    side: string;
+    symbol: string;
+    unrealized_intraday_pl: string;
+    unrealized_intraday_plpc: string;
+    unrealized_pl: string;
+    unrealized_plpc: string;
+}
 export interface User {
     displayName?: string;
 }
@@ -56,7 +75,7 @@ export interface RootState {
     newOrders?: [];
     notifications?: Notification[];
     orders?: Order[];
-    positions: [];
+    positions: Position[];
     status: {};
     ticker?: string;
     tradeUpdates?: [];

@@ -14,7 +14,7 @@ const jwtService = new JwtService();
  ******************************************************************************/
 
 router.post('/login', async (req: Request, res: Response) => {
-    console.log('/login', req.signedCookies[cookieProps.key], cookieProps.key);
+    console.log('/login');
 
     let jwt = req.signedCookies[cookieProps.key];
    

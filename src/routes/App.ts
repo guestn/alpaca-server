@@ -45,7 +45,7 @@ router.get('/account', checkAuth(), async (req: Request, res: Response) => {
  ******************************************************************************/
 
 router.get('/historicalData', checkAuth(), async (req: Request, res: Response) => {
-    console.log('getHistoricalData', req.query);
+    console.log('getHistoricalData');
     const params = {
         before: req.query.before,
         limit: req.query.limit,
@@ -69,8 +69,8 @@ router.get('/historicalData', checkAuth(), async (req: Request, res: Response) =
  ******************************************************************************/
 
 router.get('/orders', checkAuth(), async (req: Request, res: Response, next: RequestHandler) => {
-    console.log('getOrders', req.query);
-
+    console.log('getOrders');
+    
     axios.get(`${apiRoot}/v2/orders`, { headers, params: req.query }).then((response: AxiosResponse) => {
         try {
             res.send(response.data);
@@ -157,6 +157,38 @@ router.get('/clock', checkAuth(), async (req: Request, res: Response) => {
         }
     });
 });
+
+/******************************************************************************
+ *                      Clock - "GET /api/last_quote"
+ ******************************************************************************/
+
+ router.get('/last_quote', checkAuth(), async (req: Request, res: Response) => {
+    console.log('last_quote');
+
+    axios.get(`${apiRoot}/v1/last_quote/stocks/${req.query.ticker}`, { headers }).then((response: AxiosResponse) => {
+        try {
+            res.send(response.data);
+        } catch (e) {
+            console.log('ERROR', e);
+            res.status(500).send({ error: 'something blew up' });
+        }
+    });
+});
+ 
+export const getLastQuote = async (ticker: string) => {
+    console.log('TRYIN TO GET');
+    ticker = 'AMZN';
+    console.log({ url: `${apiRoot}/v1/last_quote/stocks/${ticker}` });
+    const dataRoot = 'https://data.alpaca.markets'
+    try {
+        const response = await axios.get(`${dataRoot}/v2/stocks/${ticker}/trades/latest`, { headers });            
+        console.log(`last quote for ${ticker}`, response.data);
+    } catch (e) {
+        console.log('ERROR', e);
+            
+    }
+
+}
 
 /******************************************************************************
  *                                 Export Router

@@ -21,6 +21,9 @@ const LiveQuoteStreams = ({
   //     t: 'Mon May 18 2020 11:55:00 GMT-0700 (Pacific Daylight Time)'
   //   }
   // }
+
+  //if !()
+  
   
   return (
     <section css={styles.container}>
@@ -30,20 +33,20 @@ const LiveQuoteStreams = ({
             <td>ticker</td>
             <td>bid</td>
             <td>ask</td>
-            <td>x</td>
-            <td>low</td>
+            <td>size</td>
+            {/* <td>low</td> */}
           </tr>
         </thead>
         {liveQuotes && (
           <tbody>
             { (Object.keys(liveQuotes) || []).map((d) => (
               <tr key={d}>
-                <td>{ liveQuotes[d].T }</td>
-                <td>{ liveQuotes[d].p }</td>
-                <td>{ liveQuotes[d].P }</td>
-                <td>{ liveQuotes[d].x }</td>
-                <td>{ liveQuotes[d].h }</td>
-                <td>{ liveQuotes[d].l }</td>
+                <td>{ liveQuotes[d]?.T }</td>
+                <td>{ liveQuotes[d]?.p }</td>
+                <td>{ liveQuotes[d]?.P }</td>
+                <td>{ liveQuotes[d]?.S }</td>
+                {/* <td>{ liveQuotes[d]?.h }</td>
+                <td>{ liveQuotes[d]?.l }</td> */}
               </tr>
             ))}
 

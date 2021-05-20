@@ -26,6 +26,7 @@ const OrdersBox = ({ orders, onCancelOrder, onRequestOrders, type, notCanceled }
     const [cancelledFilter, setCancelledFilter] = useState(false);
 
     let title = 'Waiting';
+
     useEffect(() => {
         onRequestOrders();
     }, []);

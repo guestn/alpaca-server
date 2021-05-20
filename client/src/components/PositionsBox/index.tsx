@@ -1,13 +1,12 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { useEffect, Fragment } from 'react';
-import { array, func } from 'prop-types';
 import { useInterval } from '../../utils';
-
 import styles from './styles';
+import { Position } from '../../redux/reducers/types';
 
 interface PositionsBoxProps {
-    positions: [];
+    positions: Position[];
     onRequestPositions: () => void;
     type: string;
 }
@@ -26,15 +25,15 @@ const PositionsBox = ({ positions, onRequestPositions, type }: PositionsBoxProps
         title = `Positions (${positions.length})`;
     }
 
-    const addSign = (num: number) => {
+    const addSign = (num: number | string): string => {
         const res = num > 0 ? `+${num}` : `${num}`;
         return res;
     };
 
-    const pctChange = (pos) =>
-        addSign(((100 * (pos.current_price - pos.avg_entry_price)) / pos.avg_entry_price).toFixed(2));
-    const absChange = (pos) => addSign((pos.current_price - pos.avg_entry_price).toFixed(2));
-    const getPLSum = (posns) =>
+    const pctChange = (pos: Position) =>
+        addSign(((100 * (parseFloat(pos.current_price) - parseFloat(pos.avg_entry_price))) / parseFloat(pos.avg_entry_price)).toFixed(2));
+    const absChange = (pos: Position) => addSign((parseFloat(pos.current_price) - parseFloat(pos.avg_entry_price)).toFixed(2));
+    const getPLSum = (posns: Position[]) =>
         addSign(posns.reduce((sum, curr) => sum + parseFloat(curr.unrealized_pl), 0).toFixed(2));
 
     return (
@@ -82,7 +81,7 @@ const PositionsBox = ({ positions, onRequestPositions, type }: PositionsBoxProps
                                     </td>
                                     <td>{p.cost_basis}</td>
                                     <td>{p.market_value}</td>
-                                    <td className={p.unrealized_pl < 0 ? 'error' : 'ok'}>
+                                    <td css={parseFloat(p.unrealized_pl) < 0 ? 'error' : 'ok'}>
                                         {addSign(parseFloat(p.unrealized_pl).toFixed(2))}
                                     </td>
                                 </tr>
@@ -94,11 +93,6 @@ const PositionsBox = ({ positions, onRequestPositions, type }: PositionsBoxProps
             )}
         </section>
     );
-};
-
-PositionsBox.propTypes = {
-    positions: array,
-    onRequestPositions: func,
 };
 
 export default PositionsBox;

@@ -9,7 +9,7 @@ const rootElement = document.getElementById('root');
 
 ReactDOM.render(
     <Provider store={store}>
-        {/* <WebsocketSubscriber /> */}
+        <WebsocketSubscriber />
         <App />
     </Provider>,
     rootElement,

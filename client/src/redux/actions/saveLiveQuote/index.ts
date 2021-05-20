@@ -15,6 +15,6 @@ export const saveLiveQuoteSucceeded = ({ ticker, liveQuotes }):SaveLiveQuoteSucc
 });
 
 
-export const saveLiveQuote = ({ ticker, liveQuotes }) => (dispatch: Dispatch<any>) => {
-  return dispatch(saveLiveQuoteSucceeded({ ticker, liveQuotes }));
+export const saveLiveQuote = ({ ticker, data }) => (dispatch: Dispatch<any>) => {
+  return dispatch(saveLiveQuoteSucceeded({ ticker, liveQuotes: data }));
 };

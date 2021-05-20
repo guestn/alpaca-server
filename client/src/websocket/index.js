@@ -3,7 +3,6 @@ import actions from '../redux/actions/index.ts';
 
 //import Alpaca from '@alpacahq/alpaca-trade-api';
 
-
 // class WebsocketSubscriber {
 //   constructor({ keyId, secretKey, paper = true }) {
 //     this.alpaca = new Alpaca({
@@ -12,7 +11,6 @@ import actions from '../redux/actions/index.ts';
 //       paper: paper,
 //       usePolygon: USE_POLYGON
 //     })
-
 
 //     this.alpaca.lastQuote('AAPL').then((resp) => {
 //       console.log(resp)
@@ -92,87 +90,85 @@ import actions from '../redux/actions/index.ts';
 //   paper: true,
 // })
 const listenTradeUpdates = {
-  action: 'listen',
-  data: {
-    streams: ['account_updates', 'trade_updates'],
-  },
+    action: 'listen',
+    data: {
+        streams: ['account_updates', 'trade_updates'],
+    },
 };
 
 const auth = {
-  action: 'authenticate',
-  data: {
-    key_id: process.env.REACT_APP_ALPACA_CLIENT_ID,
-    secret_key: process.env.REACT_APP_ALPACA_API_SECRET,
-  },
+    action: 'authenticate',
+    data: {
+        key_id: 'PKIUKC8PVQNIGYMKC9R9', //process.env.REACT_APP_ALPACA_CLIENT_ID,
+        secret_key: 'GqhtqJaA7KmbIP0lDgg03R61Y0LBxwKVnqJYev55',//process.env.REACT_APP_ALPACA_API_SECRET,
+    },
 };
 
 const listenData = {
-  action: 'listen',
-  data: {
-    streams: ['T.AAPL', 'Q.AAPL', 'Q.MSFT'],// 'AM.AAPL'],
-  },
+    action: 'listen',
+    data: {
+        streams: ['Q.AMZN', 'Q.MSFT', 'T.AMZN'], // 'AM.AAPL'],
+    },
 };
 
 const WebsocketSubscriber = ({ dispatch }) => {
-  console.log('WebsocketSubscriber');
+    console.log('WebsocketSubscriber');
 
-  const ws = new WebSocket('wss://data.alpaca.markets/stream');
-  ws.binaryType = 'arraybuffer';
+    const ws = new WebSocket('wss://data.alpaca.markets/stream');
+    ws.binaryType = 'arraybuffer';
 
-  ws.addEventListener('open', (event) => {
-    console.info('OPENED WS CONNECTION', event);
-    ws.send(JSON.stringify(auth));
-    dispatch(actions.updateConnectionStatus({ connection: true }));
-  });
+    ws.addEventListener('open', (event) => {
+        console.info('OPENED WS CONNECTION', event);
+        ws.send(JSON.stringify(auth));
+        dispatch(actions.updateConnectionStatus({ connection: true }));
+    });
 
-  ws.addEventListener('close', () => {
-    console.info('CLOSED WS CONNECTION');
-    dispatch(actions.updateConnectionStatus({ stream: null, connection: false }));
-  });
+    ws.addEventListener('close', () => {
+        console.info('CLOSED WS CONNECTION');
+        dispatch(actions.updateConnectionStatus({ stream: null, connection: false }));
+    });
 
-  ws.addEventListener('message', (event) => {
+    ws.addEventListener('message', (event) => {
+        //console.log('Message from server ', event.data);
+        // let str = new TextDecoder(ENCODING).decode(event.data);
+        // const str = parseInt(event.data).toString(2)
+        //const str = ab2str(new Uint8Array(event.data)); - for trade data need to unbinary it
+        const msg = JSON.parse(event.data);
+        //console.log('msg', msg);
 
-    //console.log('Message from server ', event.data);
-    // let str = new TextDecoder(ENCODING).decode(event.data);
-    // const str = parseInt(event.data).toString(2)
-    //const str = ab2str(new Uint8Array(event.data)); - for trade data need to unbinary it
-    const msg = JSON.parse(event.data);
-    console.log('msg', msg);
+        switch (msg.stream) {
+            case 'authorization':
+                if (msg.data.status === 'authorized') {
+                    console.info('AUTHORIZED: ATTEMPT OPEN LISTENING STREAM');
+                    ws.send(JSON.stringify(listenData));
+                    //return ws.send(JSON.stringify(listenTradeUpdates));
+                }
+                return false;
+            case 'listening':
+                console.info('OPENED LISTENING STREAM', msg);
+                return dispatch(actions.updateConnectionStatus({ stream: msg.data.streams }));
+            case 'trade_updates':
+                console.log('trade_updates');
 
-    switch (msg.stream) {
-    case 'authorization':
-      if (msg.data.status === 'authorized') {
-        console.info('AUTHORIZED: ATTEMPT OPEN LISTENING STREAM');
-        ws.send(JSON.stringify(listenData));
-        //return ws.send(JSON.stringify(listenTradeUpdates));
-      }
-      return false;
-    case 'listening':
-      console.info('OPENED LISTENING STREAM', msg);
-      return dispatch(actions.updateConnectionStatus({ stream: msg.data.streams }));
-    case 'trade_updates':
-      console.log('trade_updates');
-      
-      return dispatch(actions.saveTradeUpdate(msg.data));
-    default: {
-      const str = msg.stream.split('.');
-      const ticker = str[1];
-      const type = str[0];
-      console.log({ ticker, type });
-      if (type === 'T') {
-        return dispatch(actions.saveLiveData({ ticker, data: msg.data }));
-      }
-      if (type === 'Q') {
-        return dispatch(actions.saveLiveQuote({ ticker, data: msg.data }));
-      }
-    }
-    }
-  });
-  return null;
+                return dispatch(actions.saveTradeUpdate(msg.data));
+            default: {
+                const str = msg.stream.split('.');
+                const ticker = str[1];
+                const type = str[0];
+                //console.log(msg.data);
+                if (type === 'T') {
+                    return dispatch(actions.saveLiveData({ ticker, data: msg.data }));
+                }
+                if (type === 'Q') {
+                    return dispatch(actions.saveLiveQuote({ ticker, data: msg.data }));
+                }
+            }
+        }
+    });
+    return null;
 };
 
 export default connect(null, null)(WebsocketSubscriber);
-
 
 /* 
 msg: {

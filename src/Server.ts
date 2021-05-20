@@ -12,6 +12,8 @@ import BaseRouter from './routes';
 import logger from '@shared/Logger';
 import { cookieProps } from '@shared/constants';
 import cors from 'cors';
+import { getLastQuote } from './routes/App';
+import { checkAlerts } from './notifications';
 
 // Init express
 const app = express();
@@ -89,6 +91,15 @@ app.get('/', (req: Request, res: Response) => {
     }
 });
 
+// app.use((req, res, next) => {
+//     console.log('SET_INTERVAL!!!');
+    
+//     () => setInterval(getLastQuote, 5000, 'AMZN');
+//     next();
+// });
+
+//setInterval(getLastQuote, 10000);
+//setInterval(checkAlerts, 10000, { ticker: 'AMZN', data: { P: 4000 }});
 // app.get('/*', (req: Request, res: Response) => {
 //   //console.log('GET ALERTS');
 //   //return res.sendFile('index.html', { root: clientDir })
