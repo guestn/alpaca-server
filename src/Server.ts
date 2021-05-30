@@ -14,6 +14,7 @@ import { cookieProps } from '@shared/constants';
 import cors from 'cors';
 import { getLastQuote } from './routes/App';
 import { checkAlerts } from './notifications';
+import { addUser } from './routes/User';
 
 // Init express
 const app = express();
@@ -79,6 +80,7 @@ const staticDir =
         ? path.join(__dirname, '../client/public')
         : path.join(__dirname, './client/public');
 app.use(express.static(staticDir));
+console.log({ staticDir, viewsDir });
 
 app.get('/', (req: Request, res: Response) => {
     console.log('login if not logged in', req.originalUrl);
@@ -90,6 +92,8 @@ app.get('/', (req: Request, res: Response) => {
         return res.sendFile('index.html', { root: clientDir });
     }
 });
+
+//addUser();
 
 // app.use((req, res, next) => {
 //     console.log('SET_INTERVAL!!!');

@@ -34,7 +34,7 @@ const styles = {
         ...tables,
         fontSize: '1em',
     },
-    coloredSpan: (val: string) => ({
+    coloredSpan: (val: boolean) => ({
         color: val ? colors.error : colors.ok,
     }),
     PLsum: {

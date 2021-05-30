@@ -20,7 +20,7 @@ const router = Router();
 
 const TABLE_NAME = 'Alpaca-Alerts';
 
-export const getAlerts = async (req: Request, res: Response): Promise<{ response: any | null, error: Error | null}> => {
+export const getAlerts = async (): Promise<{ response: any | null, error: Error | null}> => {
     const params = {
         TableName: TABLE_NAME,
     };
@@ -37,7 +37,7 @@ export const getAlerts = async (req: Request, res: Response): Promise<{ response
 
 router.get('/alerts', checkAuth(), async (req: Request, res: Response) => {
     console.log('getAlerts');
-    const { response, error } = await getAlerts(req, res);
+    const { response, error } = await getAlerts();
 
     if (error) {
         console.error('Unable to read item. Error JSON:', JSON.stringify(error, null, 2));

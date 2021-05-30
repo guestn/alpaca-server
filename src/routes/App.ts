@@ -11,9 +11,7 @@ import { apiRoot, headers } from '../config';
 const router = Router();
 
 export const checkAuth = () => {
-    return (req: Request, res: Response, next: NextFunction) => {
-      console.log({ signed: req.signedCookies, unsigned: req.cookies });
-      
+    return (req: Request, res: Response, next: NextFunction) => {      
         const jwt = req.signedCookies[cookieProps.key];
         if (!jwt) {
             res.status(UNAUTHORIZED).send('Unauthorized Request I am afraid');
@@ -29,7 +27,6 @@ export const checkAuth = () => {
 
 router.get('/account', checkAuth(), async (req: Request, res: Response) => {
     console.log('getAccount');
-    console.log('HEADERS', { headers });
     axios.get(`${apiRoot}/v2/account`, { headers }).then((response: AxiosResponse) => {
         try {
             res.send(response.data);
@@ -82,7 +79,7 @@ router.get('/orders', checkAuth(), async (req: Request, res: Response, next: Req
 });
 
 router.post('/orders', checkAuth(), async (req: Request, res: Response) => {
-    console.log('Post Orders', req.body);
+    console.log('Post Orders');
 
     axios.post(`${apiRoot}/v2/orders`, req.body, { headers }).then((response: AxiosResponse) => {
         try {
@@ -95,7 +92,7 @@ router.post('/orders', checkAuth(), async (req: Request, res: Response) => {
 });
 
 router.delete('/orders', checkAuth(), async (req: Request, res: Response) => {
-    console.log('Delete Order', req.body, req.params, req.query);
+    console.log('Delete Order');
 
     axios.delete(`${apiRoot}/v2/orders/${req.query.id}`, { headers }).then((response: AxiosResponse) => {
         try {
@@ -129,7 +126,7 @@ router.get('/positions', checkAuth(), async (req: Request, res: Response) => {
  ******************************************************************************/
 
 router.get('/assets', checkAuth(), async (req: Request, res: Response) => {
-    console.log('assets');
+    console.log('get assets');
 
     axios.get(`${apiRoot}/v2/assets`, { headers }).then((response: AxiosResponse) => {
         try {

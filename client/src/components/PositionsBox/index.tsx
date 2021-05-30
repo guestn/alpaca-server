@@ -63,12 +63,12 @@ const PositionsBox = ({ positions, onRequestPositions, type }: PositionsBoxProps
                                     <td>{p.symbol}</td>
                                     <td>{p.side}</td>
                                     <td>{p.qty}</td>
-                                    <td>{p.avg_entry_price}</td>
+                                    <td>{parseFloat(p.avg_entry_price).toFixed(2)}</td>
                                     <td>
-                                        <div css={styles.spaced}>
+                                        <div css={styles.spaced3}>
                                             {p.current_price}
                                             {
-                                                <span css={styles.coloredSpan(absChange(p) < 0)}>
+                                                <span css={styles.coloredSpan(!!(absChange(p) < 0))}>
                                                     {`(${absChange(p)})`}
                                                 </span>
                                             }
