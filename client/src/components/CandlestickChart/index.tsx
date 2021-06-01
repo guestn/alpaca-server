@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ResizeDetector from 'react-resize-detector';
 import Button from '../Button';
 import d3Utils from './utils';
@@ -8,7 +8,7 @@ import spacing from '../../styles/spacing';
 import { scales } from '../MainPage/helpers';
 import styles from './styles';
 import TickerSelector from '../MainPage/TickerSelector';
-import { Asset } from '../../redux/reducers/types';
+import { Asset, HistoricalDatum } from '../../redux/reducers/types';
 
 interface CandlestickChartProps {
     assets: Asset[];
@@ -16,7 +16,7 @@ interface CandlestickChartProps {
     onRequestAssets: () => void;
     onRequestDuration: (scale: string) => void;
     onRequestTicker: (ticker: string) => void;
-    timeSeriesData: {};
+    timeSeriesData: HistoricalDatum;
     ticker: string;
 }
 
@@ -26,14 +26,16 @@ const CandlestickChart = ({
     onRequestAssets,
     onRequestDuration,
     onRequestTicker,
-    timeSeriesData = [],
+    timeSeriesData,
     ticker,
 }: CandlestickChartProps) => {
     const [dimensions, setDimensions] = useState({ width: 100, height: 100 });
-    const onResize = (width: number, height: number) => setDimensions({ width, height });
+    const onResize = (width?: number, height?: number) => {
+        if (width && height) setDimensions({ width, height });
+    };
 
     useEffect(() => {
-        if (dimensions.width > 0 && Object.keys(timeSeriesData).length) {
+        if (dimensions.width > 0 && timeSeriesData && Object.keys(timeSeriesData).length) {
             d3Utils.empty();
             d3Utils.initializeChart({ timeSeriesData, dimensions, duration });
         }

@@ -6,15 +6,23 @@ import actions from '../../redux/actions';
 const Login = ({ requestLogin }) => {
     console.log('LOGIN FORM RENDER');
     
- return <LoginForm onRequestLogin={requestLogin} />
+    return <LoginForm onRequestLogin={requestLogin} />
 }
 
-const mapStateToProps = (state) => ({
-    accountData: state.accountData || null,
-});
+const mapStateToProps = (state) => {
+    
+    return {
+        accountData: state.accountData || null,
+
+    }
+};
 
 const mapDispatchToProps = (dispatch) => ({
-    requestLogin: (params) => dispatch(actions.requestLogin(params)),
+    requestLogin: (params, history) => {
+        console.log({ params, history });
+        
+        return dispatch(actions.requestLogin(params, history))
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

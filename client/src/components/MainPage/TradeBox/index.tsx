@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { CreateOrderParams } from '../../../redux/actions/createOrder';
 import Button from '../../Button';
 import Icon from '../../Icon';
 
@@ -10,17 +11,9 @@ enum Side {
   BUY = 'buy',
   SELL = 'sell'
 }
-
-interface OnCreatOrderArgs {
-    symbol: string;
-    qty: number;
-    side: Side;
-    type: string,
-    time_in_force: string;
-}
 interface TradeBoxProps {
     ticker: string;
-    onCreateOrder: (args: OnCreatOrderArgs) => void;
+    onCreateOrder: (args: CreateOrderParams) => void;
 }
 
 const TradeBox = ({ onCreateOrder, ticker }: TradeBoxProps) => {

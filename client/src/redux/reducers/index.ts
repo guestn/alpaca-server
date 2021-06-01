@@ -1,10 +1,10 @@
-import { RootState } from './types';
+import { Alert, RootState, User } from './types';
 import { Action, bindActionCreators } from 'redux';
 import * as at from '../actions/actionTypes';
 
 export const initialState: RootState = {
     assets: [],
-    accountData: {},
+    accountData: undefined,
     notifications: [],
     historicalData: {},
     connectionStatus: {
@@ -12,17 +12,19 @@ export const initialState: RootState = {
         stream: false,
     },
     newOrders: [],
-    user: {},
+    user: { role: 0, email: ''},
     liveData: {},
     liveQuotes: {},
     tradeUpdates: [],
     orders: [],
+    lastError: undefined,
+    errors: {}
 };
 
-type AllActions = Action & RootState;
+type AllActions = Action<any> & RootState;
 
 // TODO: Split reducer into many
-const reducer = (state = initialState, action: AllActions): RootState => {    
+const reducer = (state = initialState, action: AllActions): RootState => {
     switch (action.type) {
         case at.REQUEST_LOGIN_SUCCEEDED:
             return {
@@ -32,7 +34,7 @@ const reducer = (state = initialState, action: AllActions): RootState => {
         case at.REQUEST_LOGOUT_SUCCEEDED:
             return {
                 ...state,
-                user: {},
+                user: { role: 0, email: '' },
             };
         case at.REQUEST_LOGIN_ERRORED:
         case at.REQUEST_LOGOUT_ERRORED:

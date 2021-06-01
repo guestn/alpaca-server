@@ -39,7 +39,7 @@ const AccountBox = ({ accountData, onRequestAccountData }: AccountBoxProps) => {
 };
 
 interface AccountBoxProps {
-    accountData: AccountData;
+    accountData?: AccountData;
     onRequestAccountData: () => void;
 }
 

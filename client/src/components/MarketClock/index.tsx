@@ -6,35 +6,36 @@ import { format } from 'date-fns';
 import Icon from '../Icon';
 
 import { statusText, marketClock } from './styles';
+import { Clock } from '../../redux/reducers/types';
 
 interface MarketClockProps {
-  clock: { is_open: boolean; next_open: string; next_close: string } | null;
-  onRequestClock: () => void;
+    clock: Clock | null;
+    onRequestClock: () => void;
 }
 
 const MarketClock = ({ clock = null, onRequestClock }: MarketClockProps) => {
-  useEffect(() => {
-    onRequestClock();
-    return () => {};
-  }, []);
-  return (
-    <section css={marketClock}>
-      <Icon name="time-outline" />
-      {clock && (
-        <Fragment>
-          <div css={statusText}>{clock.is_open ? 'Market Open' : 'Market Closed'}</div>
-          <div title="Next Open">
-            <Icon name="sunny-outline" />
-            <span css={statusText}>{format(new Date(clock.next_open), 'dd MMM HH:mm')}</span>
-          </div>
-          <div title="Next Close">
-            <Icon name="moon-outline" />
-            <span css={statusText}>{format(new Date(clock.next_close), 'dd MMM HH:mm')}</span>
-          </div>
-        </Fragment>
-      )}
-    </section>
-  );
+    useEffect(() => {
+        onRequestClock();
+        return () => {};
+    }, []);
+    return (
+        <section css={marketClock}>
+            <Icon name="time-outline" />
+            {clock && (
+                <Fragment>
+                    <div css={statusText}>{clock.is_open ? 'Market Open' : 'Market Closed'}</div>
+                    <div title="Next Open">
+                        <Icon name="sunny-outline" />
+                        <span css={statusText}>{format(new Date(clock.next_open), 'dd MMM HH:mm')}</span>
+                    </div>
+                    <div title="Next Close">
+                        <Icon name="moon-outline" />
+                        <span css={statusText}>{format(new Date(clock.next_close), 'dd MMM HH:mm')}</span>
+                    </div>
+                </Fragment>
+            )}
+        </section>
+    );
 };
 
 export default MarketClock;

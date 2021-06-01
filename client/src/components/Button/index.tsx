@@ -11,7 +11,7 @@ export enum ButtonType {
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     active?: boolean;
-    buttonType?: "button" | "submit" | "reset" | undefined;
+    buttonType?: 'button' | 'submit' | 'reset' | undefined;
     disabled?: boolean;
     icon?: string;
     label: string;
@@ -20,9 +20,18 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     displayType?: string;
 }
 
-const Button = ({ active, buttonType = 'button', disabled, icon, label, onClick, title, displayType }: ButtonProps) => (
+const Button = ({
+    active = false,
+    buttonType = 'button',
+    disabled = false,
+    icon,
+    label,
+    onClick,
+    title,
+    displayType = 'default',
+}: ButtonProps) => (
     <button
-        css={buttonStyle((active = false), (disabled = false), (displayType = 'default'))}
+        css={buttonStyle(active, disabled, displayType)}
         disabled={disabled}
         type={buttonType}
         onClick={(e) => {

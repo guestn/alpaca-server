@@ -1,5 +1,5 @@
 /** @jsx jsx */
-
+import { TextTransformProperty } from 'csstype';
 import colors from './colors';
 import spacing from './spacing';
 
@@ -22,7 +22,7 @@ const typography = {
     },
     h2: {
         margin: `0 0 ${spacing.unit} 0`,
-        textTransform: 'capitalize',
+        textTransform: 'capitalize' as TextTransformProperty,
         fontSize: '1.2rem',
     },
     h3: {

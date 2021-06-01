@@ -8,13 +8,13 @@ interface SaveLiveQuoteSucceededAction {
   ticker: string,
 }
 
-export const saveLiveQuoteSucceeded = ({ ticker, liveQuotes }):SaveLiveQuoteSucceededAction => ({
+export const saveLiveQuoteSucceeded = ({ ticker, liveQuotes }: { ticker: string, liveQuotes: {}}):SaveLiveQuoteSucceededAction => ({
   type: SAVE_LIVE_QUOTE_SUCCEEDED,
   liveQuotes,
   ticker,
 });
 
 
-export const saveLiveQuote = ({ ticker, data }) => (dispatch: Dispatch<any>) => {
+export const saveLiveQuote = ({ ticker, data }: { ticker: string, data: {}}) => (dispatch: Dispatch<any>) => {
   return dispatch(saveLiveQuoteSucceeded({ ticker, liveQuotes: data }));
 };

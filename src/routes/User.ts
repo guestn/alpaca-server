@@ -15,7 +15,7 @@ export const getUserByEmail = async (email: string): Promise<{ user: any | null;
 
     try {
         const data = await docClient.scan(params).promise();
-        console.log('Scan succeeded getUserByEmail:', JSON.stringify(data, null, 2));
+        console.log('Scan succeeded getUserByEmail');
         return { error: null, user: data && data.Items && data.Items[0] };
     } catch (e) {
         console.error('Unable to read item. Error JSON:', JSON.stringify(e, null, 2));
@@ -34,7 +34,7 @@ export const getUserById = async (id: string): Promise<{ user: any | null; error
 
   try {
       const data = await docClient.scan(params).promise();
-      console.log('Scan succeeded getUserByEmail:', JSON.stringify(data, null, 2));
+      console.log('Scan succeeded getUserById');
       return { error: null, user: data && data.Items && data.Items[0] };
   } catch (e) {
       console.error('Unable to read item. Error JSON:', JSON.stringify(e, null, 2));

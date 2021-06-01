@@ -8,7 +8,7 @@ const styles = {
   ...typography,
   container: {
     alignItems: 'center',
-    border: `1px solid ${colors.text}`,
+    border: `1px solid ${colors.border}`,
     display: 'flex',
     flexDirection: 'column' as FlexDirectionProperty,
     gridColumn: '1 / span 1',
@@ -16,7 +16,7 @@ const styles = {
   },
   header: {
     alignItems: 'center',
-    borderBottom: `1px solid ${colors.text}`,
+    borderBottom: `1px solid ${colors.border}`,
     display: 'flex',
     height: spacing.unit * 6,
     justifyContent: 'center',

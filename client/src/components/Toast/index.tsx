@@ -1,15 +1,11 @@
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core';
-import React, { useEffect, useRef, useState } from 'react';
+import { jsx } from '@emotion/core';
+import { useEffect, useRef, useState } from 'react';
 import { NoteType } from '../../redux/actions/createNotification';
+import { Notification } from '../../redux/reducers/types';
 import { container } from './styles';
 
-interface ToastProps {
-    message?: string;
-    noteType?: NoteType;
-}
-
-const Toast = ({ message = 'There was an error', noteType }: ToastProps) => {
+const Toast = ({ message = 'There was an error', noteType, createdAt }: Notification) => {
     const timerRef = useRef<number | null>(null);
     const [isActive, setIsActive] = useState(false);
     const setTimer = () => {

@@ -1,31 +1,31 @@
 /** @jsx jsx */
-import { jsx, css, Global } from '@emotion/core';
-import React, { useEffect, useState } from 'react';
+import { jsx, Global } from '@emotion/core';
+import { useEffect, useState, SetStateAction } from 'react';
+import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom';
+import { createBrowserHistory, History } from 'history';
 import Toast from '../Toast';
-import Icon from '../Icon';
+import Header from '../Header';
+import SideBar from '../SideBar';
 import LoginPage from '../LoginPage';
 import MainPage from '../MainPage';
 import OrdersPage from '../OrdersPage';
 import AlertsPage from '../AlertsPage';
-import Route from '../../router/Route';
-import Link from '../../router/Link';
-import { historyPush } from '../../router';
-import dispatch from '../../redux/store';
-import { app, global, sidebar, logo, login } from './styles';
 import { Asset, Clock, HistoricalData, LiveData, Notification, User } from '../../redux/reducers/types';
+import { GetHistoricalDataParams } from '../../redux/actions/getHistoricalData';
+import { CreateOrderParams } from '../../redux/actions/createOrder';
+import { app, global } from './styles';
 
 interface MainContainerProps {
     notifications: Notification[] | null;
-    user: User;
+    user: User | null;
     assets: Asset[];
-    clock: Clock;
-    liveData: LiveData;
-    onCreateOrder: () => void;
+    clock: Clock | null;
+    liveData: LiveData | null;
+    onCreateOrder: (params: CreateOrderParams) => void;
     onRequestAssets: () => void;
     onRequestClock: () => void;
-    onRequestHistoricalData: () => void;
-    onRequestLogin: (params: {}) => void;
-    onRequestLogout: () => void;
+    onRequestHistoricalData: (params: GetHistoricalDataParams) => void;
+    onRequestLogout: ({ history }: { history: History }) => void;
     historicalData: HistoricalData;
 }
 
@@ -37,87 +37,58 @@ const MainContainer = ({
     onRequestAssets,
     onRequestClock,
     onRequestHistoricalData,
-    onRequestLogin,
     onRequestLogout,
     historicalData,
     notifications,
     user,
 }: MainContainerProps) => {
-    const [stateNotification, setStateNotification] = useState(null);
+    const [stateNotification, setStateNotification] = useState<SetStateAction<Notification | null>>(null);
     useEffect(() => {
-        setStateNotification((notifications && notifications[0]) || null);
+        if (notifications) {
+            setStateNotification(notifications[0] || null);
+        }
     }, [notifications?.length]);
-    console.log({ user });
 
     if (!user || !Object.keys(user).length) {
-        historyPush('/login');
+        createBrowserHistory().push('/login');
     }
 
     return (
         <div css={app}>
             <Global styles={global} />
-            <aside css={sidebar}>
-                <img src="/images/alpaca.svg" alt="Alpaca Logo" css={logo} />
-                <Link to="/" active={location.pathname === '/'}>
-                    <Icon name="home-outline" />
-                </Link>
-                <Link to="/orders" active={location.pathname === '/orders'}>
-                    <Icon name="book-outline" />
-                </Link>
-                <Link to="/alerts" active={location.pathname === '/alerts'}>
-                    <Icon name="megaphone-outline" />
-                </Link>
-            </aside>
-            <Route
-                component={
-                    <MainPage
-                        onRequestClock={onRequestClock}
-                        onRequestAssets={onRequestAssets}
-                        user={user}
-                        onRequestHistoricalData={onRequestHistoricalData}
-                        assets={assets}
-                        clock={clock}
-                        liveData={liveData}
-                        onCreateOrder={onCreateOrder}
-                        onRequestLogout={onRequestLogout}
-                        historicalData={historicalData}
+            <BrowserRouter>
+                <SideBar />
+                <Header user={user || undefined} clock={clock} onRequestClock={onRequestClock} onRequestLogout={onRequestLogout} />
+                <Switch>
+                    <Route
+                        render={() => (
+                            <MainPage
+                                onRequestAssets={onRequestAssets}
+                                onRequestHistoricalData={onRequestHistoricalData}
+                                assets={assets}
+                                liveData={liveData}
+                                onCreateOrder={onCreateOrder}
+                                historicalData={historicalData}
+                            />
+                        )}
+                        path="/"
+                        exact
                     />
-                }
-                path="/"
-                exact
-            />
-            <Route 
-                component={
-                     <Route component={<LoginPage user={user} />} path="/login" exact />
-                }
-                path="/login"
-                exact
-            />
-            <Route
-                component={
-                    <OrdersPage
-                        user={user}
-                        onRequestClock={onRequestClock}
-                        clock={clock}
-                        onRequestLogout={onRequestLogout}
+                    <Route
+                        render={() => <Route render={() => <LoginPage />} path="/login" exact />}
+                        path="/login"
+                        exact
                     />
-                }
-                path="/orders"
-                exact
-            />
-            <Route
-                component={
-                    <AlertsPage
-                        user={user}
-                        onRequestClock={onRequestClock}
-                        clock={clock}
-                        onRequestLogout={onRequestLogout}
-                    />
-                }
-                path="/alerts"
-                exact
-            />
-            {stateNotification && <Toast {...stateNotification} />}
+                    <Route render={() => <OrdersPage />} path="/orders" exact />
+                    <Route render={() => <AlertsPage />} path="/alerts" exact />
+                </Switch>
+            </BrowserRouter>
+            {stateNotification && (
+                <Toast
+                    noteType={stateNotification.noteType || ''}
+                    message={stateNotification.message}
+                />
+            )}
         </div>
     );
 };

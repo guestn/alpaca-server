@@ -5,13 +5,13 @@ import spacing from '../../styles/spacing';
 
 const styles = {
   container: {
-    border: `1px solid ${colors.text}`,
+    border: `1px solid ${colors.border}`,
     gridColumn: '2 / span 4',
     gridRow: '1 / span 7',
   },
   header: {
     alignItems: 'center',
-    borderBottom: `1px solid ${colors.text}`,
+    borderBottom: `1px solid ${colors.border}`,
     display: 'flex',
     height: spacing.unit * 6,
     justifyContent: 'space-between',

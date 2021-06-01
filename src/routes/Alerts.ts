@@ -5,7 +5,6 @@ import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
 import { apiRoot, headers } from '../config';
 import { checkAuth } from './App';
 import AWS from 'aws-sdk';
-import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
 import { sendEmail } from '../notifications/email';
 
 export const docClient: DocumentClient = new AWS.DynamoDB.DocumentClient({

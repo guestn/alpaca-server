@@ -5,7 +5,7 @@ import colors from '../../../styles/colors';
 
 export const container = css({
   padding: `${spacing.unit * 1}`,
-  border: `1px solid ${colors.text}`,
+  border: `1px solid ${colors.border}`,
   display: 'flex',
   height: spacing.unit * 16,
   justifyContent: 'space-between',

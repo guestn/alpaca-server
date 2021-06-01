@@ -5,7 +5,7 @@ import spacing from './spacing';
 
 const tables = {
     borderCollapse: 'collapse' as BorderCollapseProperty,
-    borderBottom: `1px solid ${colors.text}`,
+    borderBottom: `1px solid ${colors.border}`,
     td: {
         color: colors.text,
         fontSize: '0.85rem',

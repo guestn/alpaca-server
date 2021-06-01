@@ -6,7 +6,7 @@ import typography from '../../styles/typography';
 
 export const footer = css({
   alignItems: 'center',
-  borderTop: `1px solid ${colors.text}`,
+  borderTop: `1px solid ${colors.border}`,
   display: 'flex',
   padding: spacing.unit * 2,
   justifyContent: 'space-between',

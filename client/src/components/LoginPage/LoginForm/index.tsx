@@ -1,6 +1,8 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx } from '@emotion/core';
 import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom'
+import { History } from 'history';
 import Button from '../../Button';
 
 import { form, input } from './styles';
@@ -11,21 +13,22 @@ interface LoginArgs {
 }
 
 interface LoginFormProps {
-    onRequestLogin: ({ user, password }: LoginArgs) => void;
+    onRequestLogin: ({ user, password }: LoginArgs, history: History) => void;
 }
 
 const LoginForm = ({ onRequestLogin }: LoginFormProps) => {
     const [user, setUser] = useState('nicholas.guest@gmail.com');
-    const [password, setPassword] = useState('Bongo902!');
+    const [password, setPassword] = useState('B');
+    const history = useHistory()
 
     useEffect(() => {
         console.log('onRequestLogin');
-        onRequestLogin({ user: null, password: null });
+        onRequestLogin({ user: null, password: null }, history);
     }, []);
 
     const onClickButton = () => {
         if (!user.length) return;
-        onRequestLogin({ user, password });
+        onRequestLogin({ user, password }, history);
     };
 
     return (

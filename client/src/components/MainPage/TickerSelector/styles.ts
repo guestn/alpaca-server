@@ -22,20 +22,20 @@ const styles = {
         border: 'none',
         '&:active': {
             background: colors.md,
-            border: `1px solid ${colors.text}`,
+            border: `1px solid ${colors.border}`,
         },
     },
     select: {
         container: (provided: {}) => ({
             ...provided,
-            border: `1px solid ${colors.text}`,
+            border: `1px solid ${colors.border}`,
             display: 'flex',
             borderRadius: spacing.br,
         }),
         valueContainer: (provided: {}) => ({
             ...provided,
         }),
-        option: (provided, state) => ({
+        option: (provided: any, state: any) => ({
             ...provided,
             color: state.isSelected ? colors.hilite : colors.text,
         }),

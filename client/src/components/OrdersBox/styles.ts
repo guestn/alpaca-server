@@ -8,7 +8,7 @@ import tables from '../../styles/tables';
 const styles = {
     ...typography,
     container: (type: string) => ({
-        border: `1px solid ${colors.text}`,
+        border: `1px solid ${colors.border}`,
         display: 'flex',
         flexDirection: 'column' as FlexDirectionProperty,
         gridColumn: type === 'compact' ? '2 / span 4' : '1 / span 1',
@@ -16,7 +16,7 @@ const styles = {
         overflowY: 'scroll' as OverflowYProperty,
     }),
     header: {
-        borderBottom: `1px solid ${colors.text}`,
+        borderBottom: `1px solid ${colors.border}`,
         display: 'flex',
         height: spacing.unit * 6,
         minHeight: spacing.unit * 6,

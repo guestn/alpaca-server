@@ -6,10 +6,10 @@ import { object, string } from 'prop-types';
 import Icon from '../../Icon';
 
 import styles from './styles';
-import { LiveData } from '../../../redux/reducers/types';
+import { LiveData, LiveDatum } from '../../../redux/reducers/types';
 
 interface LiveDataBoxProps {
-    liveData: LiveData;
+    liveData: LiveDatum | null;
     ticker: string;
 }
 

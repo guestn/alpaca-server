@@ -1,38 +1,35 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, MapStateToProps, DefaultRootState } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import AccountBox from '../../components/MainPage/AccountBox';
 import actions from '../../redux/actions';
 import { RootState } from '../../redux/reducers/types';
 
-interface DispatchProps {
+interface DispatchFromProps {
     getAccountData: () => {};
 }
-
-interface StateProps {
-    accountData: AccountData;
-}
-
 export interface AccountData {
     buying_power: string;
     cash: string;
     portfolio_value: string;
 }
-interface AccountProps {
-    accountData: AccountData;
+interface AccountProps extends ConnectedAccountProps {
+    accountData?: AccountData | null;
     getAccountData: () => {};
 }
 
+interface ConnectedAccountProps {};
+
 const Account = ({ accountData, getAccountData }: AccountProps) => (
-    <AccountBox accountData={accountData} onRequestAccountData={getAccountData} />
+    <AccountBox accountData={accountData || undefined} onRequestAccountData={getAccountData} />
 );
 
-const mapStateToProps = (state: StateProps) => ({
+const mapStateToProps = (state: RootState) => ({
     accountData: state.accountData || null,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchProps => ({
+const mapDispatchToProps = (dispatch: any): DispatchFromProps => ({
     getAccountData: () => dispatch(actions.getAccountData()),
 });
 

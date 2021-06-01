@@ -1,9 +1,6 @@
 import { Request, Response, Router, RequestHandler, NextFunction } from 'express';
 import { BAD_REQUEST, OK, UNAUTHORIZED } from 'http-status-codes';
-
-import UserDao from '@daos/User/UserDao.mock';
-import { JwtService } from '@shared/JwtService';
-import { paramMissingError, loginFailedErr, cookieProps } from '@shared/constants';
+import { loginFailedErr, cookieProps, serverError } from '@shared/constants';
 import axios, { AxiosResponse } from 'axios';
 
 import { apiRoot, headers } from '../config';
@@ -14,7 +11,9 @@ export const checkAuth = () => {
     return (req: Request, res: Response, next: NextFunction) => {      
         const jwt = req.signedCookies[cookieProps.key];
         if (!jwt) {
-            res.status(UNAUTHORIZED).send('Unauthorized Request I am afraid');
+            return res.status(UNAUTHORIZED).json({
+                error: loginFailedErr,
+            });
         } else {
             next();
         }
@@ -29,10 +28,10 @@ router.get('/account', checkAuth(), async (req: Request, res: Response) => {
     console.log('getAccount');
     axios.get(`${apiRoot}/v2/account`, { headers }).then((response: AxiosResponse) => {
         try {
-            res.send(response.data);
+            res.status(OK).send(response.data);
         } catch (e) {
             console.log('ERROR', e);
-            res.status(500).send({ error: 'something blew up' });
+            res.status(500).send({ error: serverError });
         }
     });
 });
@@ -53,10 +52,10 @@ router.get('/historicalData', checkAuth(), async (req: Request, res: Response) =
         .get(`https://data.alpaca.markets/v1/bars/${req.query.timeframe}`, { headers, params })
         .then((response: AxiosResponse) => {
             try {
-                res.send(response.data);
+                res.status(OK).send(response.data);
             } catch (e) {
                 console.log('ERROR', e);
-                res.status(500).send({ error: 'something blew up' });
+                res.status(500).send({ error: serverError });
             }
         });
 });
@@ -70,10 +69,10 @@ router.get('/orders', checkAuth(), async (req: Request, res: Response, next: Req
     
     axios.get(`${apiRoot}/v2/orders`, { headers, params: req.query }).then((response: AxiosResponse) => {
         try {
-            res.send(response.data);
+            res.status(OK).send(response.data);
         } catch (e) {
             console.log('ERROR', e);
-            res.status(500).send({ error: 'something blew up' });
+            res.status(500).send({ error: serverError });
         }
     });
 });
@@ -83,10 +82,10 @@ router.post('/orders', checkAuth(), async (req: Request, res: Response) => {
 
     axios.post(`${apiRoot}/v2/orders`, req.body, { headers }).then((response: AxiosResponse) => {
         try {
-            res.send(response.data);
+            res.status(OK).send(response.data);
         } catch (e) {
             console.log('ERROR', e);
-            res.status(500).send({ error: 'something blew up' });
+            res.status(500).send({ error: serverError });
         }
     });
 });
@@ -96,10 +95,10 @@ router.delete('/orders', checkAuth(), async (req: Request, res: Response) => {
 
     axios.delete(`${apiRoot}/v2/orders/${req.query.id}`, { headers }).then((response: AxiosResponse) => {
         try {
-            res.send(response.data);
+            res.status(OK).send(response.data);
         } catch (e) {
             console.log('ERROR', e);
-            res.status(500).send({ error: 'something blew up' });
+            res.status(500).send({ error: serverError });
         }
     });
 });
@@ -113,10 +112,10 @@ router.get('/positions', checkAuth(), async (req: Request, res: Response) => {
 
     axios.get(`${apiRoot}/v2/positions`, { headers }).then((response: AxiosResponse) => {
         try {
-            res.send(response.data);
+            res.status(OK).send(response.data);
         } catch (e) {
             console.log('ERROR', e);
-            res.status(500).send({ error: 'something blew up' });
+            res.status(500).send({ error: serverError });
         }
     });
 });
@@ -130,10 +129,10 @@ router.get('/assets', checkAuth(), async (req: Request, res: Response) => {
 
     axios.get(`${apiRoot}/v2/assets`, { headers }).then((response: AxiosResponse) => {
         try {
-            res.send(response.data);
+            res.status(OK).send(response.data);
         } catch (e) {
             console.log('ERROR', e);
-            res.status(500).send({ error: 'something blew up' });
+            res.status(500).send({ error: serverError });
         }
     });
 });
@@ -147,10 +146,10 @@ router.get('/clock', checkAuth(), async (req: Request, res: Response) => {
 
     axios.get(`${apiRoot}/v2/clock`, { headers }).then((response: AxiosResponse) => {
         try {
-            res.send(response.data);
+            res.status(OK).send(response.data);
         } catch (e) {
             console.log('ERROR', e);
-            res.status(500).send({ error: 'something blew up' });
+            res.status(500).send({ error: serverError });
         }
     });
 });
@@ -164,10 +163,10 @@ router.get('/clock', checkAuth(), async (req: Request, res: Response) => {
 
     axios.get(`${apiRoot}/v1/last_quote/stocks/${req.query.ticker}`, { headers }).then((response: AxiosResponse) => {
         try {
-            res.send(response.data);
+            res.status(OK).send(response.data);
         } catch (e) {
             console.log('ERROR', e);
-            res.status(500).send({ error: 'something blew up' });
+            res.status(500).send({ error: serverError });
         }
     });
 });

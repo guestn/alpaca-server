@@ -7,37 +7,30 @@ import Orders from '../../containers/Orders';
 import Account from '../../containers/Account';
 import LiveQuotes from '../../containers/LiveQuotes';
 import Status from '../../containers/Status';
-import Header from '../Header';
 import { main, mainGrid } from './styles';
 import { scales } from './helpers';
 import CandlestickChart from '../CandlestickChart';
-import { Asset, Clock, HistoricalData, LiveData } from '../../redux/reducers/types';
+import { Asset, HistoricalData, LiveData } from '../../redux/reducers/types';
 import { getLocalStorage, setLocalStorage } from '../../utils';
+import { GetHistoricalDataParams } from '../../redux/actions/getHistoricalData';
+import { CreateOrderParams } from '../../redux/actions/createOrder';
 
 interface MainPageProps {
     assets: Asset[];
-    clock: Clock;
-    liveData: LiveData;
-    onCreateOrder: () => void;
+    liveData: LiveData | null;
+    onCreateOrder: (params: CreateOrderParams) => void;
     onRequestAssets: () => void;
-    onRequestClock: () => void;
-    onRequestHistoricalData: ({}) => void;
-    onRequestLogout: () => void;
+    onRequestHistoricalData: (params: GetHistoricalDataParams) => void;
     historicalData: HistoricalData;
-    user: object;
 }
 
 const MainPage = ({
     assets,
-    clock,
     liveData,
     onCreateOrder,
     onRequestAssets,
-    onRequestClock,
     onRequestHistoricalData,
-    onRequestLogout,
     historicalData,
-    user,
 }: MainPageProps) => {
     const [ticker, setTicker] = useState('AAPL');
     const [duration, setDuration] = useState(Object.keys(scales)[0]);
@@ -67,7 +60,6 @@ const MainPage = ({
 
     return (
         <main css={main}>
-            <Header user={user} clock={clock} onRequestClock={onRequestClock} onRequestLogout={onRequestLogout} />
             <div css={mainGrid}>
                 <LiveDataBox liveData={liveData && liveData[ticker]} ticker={ticker} />
                 <Orders type="compact" notCanceled />

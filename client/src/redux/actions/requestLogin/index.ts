@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { createNotification, NoteType } from '../createNotification';
 import { Dispatch } from 'redux';
-
-import { historyPush } from '../../../router';
+import { History } from 'history';
 
 export const REQUEST_LOGIN_ERRORED = 'REQUEST_LOGIN_ERRORED';
 export const REQUEST_LOGIN_SUCCEEDED = 'REQUEST_LOGIN_SUCCEEDED';
@@ -32,9 +31,10 @@ export const requestLoginSucceeded = (user: {}): RequestLoginSucceededAction => 
     user,
 });
 
-export const requestLogin = (params: Params) => (dispatch: Dispatch<any>) => {
+export const requestLogin = (params: Params, history: History) => (dispatch: Dispatch<any>) => {
     //const user = getPersistedUser();
-
+    console.log({ xx: history });
+    
     // console.log({user})
     // if (user) {
     //   historyPush('/');
@@ -56,7 +56,7 @@ export const requestLogin = (params: Params) => (dispatch: Dispatch<any>) => {
             if (response.status === 200) {
                 console.log('login response', { response });
                 dispatch(requestLoginSucceeded(response.data));
-                historyPush('/');
+                history.push('/');
             }
             return null;
         })

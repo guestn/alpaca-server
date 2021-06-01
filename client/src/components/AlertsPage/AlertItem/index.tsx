@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
-import React, { useEffect, useState } from 'react';
+import { jsx } from '@emotion/core';
+import { useEffect, useState } from 'react';
 import { container, buttonContainer } from './styles';
 import RangeSlider from '../../RangeSlider';
 import TickerSelector from '../../MainPage/TickerSelector';
@@ -8,9 +8,10 @@ import Button from '../../Button';
 import { scales } from '../../MainPage/helpers';
 import { uuid } from 'uuidv4';
 import { format } from 'date-fns';
+import { Asset, HistoricalData } from '../../../redux/reducers/types';
 export interface AlertItemProps {
-    assets: [];
-    historicalData: { [ticker: string]: [{ c: number }] };
+    assets: Asset[];
+    historicalData: HistoricalData;
     onRequestAssets: () => void;
     onRequestHistoricalData: ({}) => void;
     onPostAlert: (data: OnPostAlertArgs) => void;
@@ -54,10 +55,11 @@ const AlertItem = ({
     const [lastPrice, setLastPrice] = useState(0);
     const [theTicker, setTicker] = useState(ticker || 'AAPL');
     const [updateEnabled, setUpdateEnabled] = useState(false);
+    
 
     useEffect(() => {
-        const lp = historicalData[theTicker] && historicalData[theTicker].length && historicalData[theTicker][0].c;
-        setLastPrice(lp);
+        const lp = historicalData[theTicker] && historicalData[theTicker].c;
+        setLastPrice(parseFloat(lp));
     }, [historicalData]);
 
     const [min, setMin] = useState(0);
@@ -74,10 +76,7 @@ const AlertItem = ({
         setUpdateEnabled(enableUpdate);
     };
 
-    const onRequestTicker = (theTicker: string) => setTicker(theTicker);
-
-    console.log({ id });
-    
+    const onRequestTicker = (theTicker: string) => setTicker(theTicker);    
 
     return (
         <section css={container}>
@@ -100,7 +99,7 @@ const AlertItem = ({
                 )}
                 <div>{lastPrice}</div>
                 {!isNew && <div>{`This alert was set when price was ${mid}`}</div>}
-                {!isNew && <div>{`created: ${format(new Date(createdAt), 'MM/dd HH:mm:ss')}`}</div>}
+                {!isNew && <div>{`created: ${format(new Date(createdAt || 0), 'MM/dd HH:mm:ss')}`}</div>}
                 {lowSent && <div>{`LOW triggered at ${format(new Date(lowSent), 'MM/dd HH:mm:ss')}`}</div>}
                 {highSent && <div>{`HIGH triggered at ${format(new Date(highSent), 'MM/dd HH:mm:ss')}`}</div>}
             </div>

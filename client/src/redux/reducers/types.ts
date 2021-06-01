@@ -1,3 +1,6 @@
+import { DefaultRootState } from 'react-redux'
+import { NoteType } from '../actions/createNotification';
+
 export interface AccountData {
     buying_power: string;
     cash: string;
@@ -7,25 +10,49 @@ export interface Asset {
     symbol: string;
 }
 
-export interface Alert {}
+export interface Alert {
+    createdAt: string;
+    high: string;
+    highSent: string;
+    historicalData: HistoricalData;
+    id: string;
+    low: string;
+    lowSent: string;
+    mid: string;
+    ticker: string;
+}
 
-export interface Clock {}
+export interface Clock {
+    is_open: boolean;
+    next_open: string;
+    next_close: string;
+}
 
 export interface ConnectionStatus {
     connection: boolean;
     stream: boolean;
 }
 
-export interface HistoricalData {}
+export interface HistoricalData {
+    [key: string]: HistoricalDatum;
+}
+
+export interface HistoricalDatum {
+    c: string;
+}
 export interface LiveData {
+    [key: string]: LiveDatum;
+}
+
+export interface LiveDatum {
     p: number;
     t: number;
 }
 
 export interface Notification {
     message: string;
-    noteType: any;
-    createdAt: string;
+    noteType: NoteType;
+    createdAt?: string;
 }
 
 export interface Order {
@@ -60,10 +87,13 @@ export interface Position {
     unrealized_plpc: string;
 }
 export interface User {
+    name?: string;
     displayName?: string;
+    role: number;
+    email: string;
 }
 
-export interface RootState {
+export interface RootState extends DefaultRootState {
     accountData?: AccountData;
     alerts?: Alert[];
     assets?: Asset[];
@@ -75,9 +105,11 @@ export interface RootState {
     newOrders?: [];
     notifications?: Notification[];
     orders?: Order[];
-    positions: Position[];
-    status: {};
+    positions?: Position[];
+    status?: {};
     ticker?: string;
     tradeUpdates?: [];
     user?: User;
+    lastError?: any;
+    errors: {}
 }
